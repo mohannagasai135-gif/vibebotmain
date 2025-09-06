@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - VibeBot-AI Sentiment Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF9900;
+            --secondary-color: #146EB4;
+            --text-color: #2E4057;
+            --background-light: #f5f7ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Title Section */
+        .title-section {
+            width: 100%;
+            padding: 2rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa, #dee2e6);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 70px;
+        }
+
+        .title-section h1 {
+            font-size: 2.2rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        /* Products Section */
+        .products-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .products-container h2 {
+            color: var(--text-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .product-card h3 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card p {
+            font-size: 1rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .product-card a {
+            background-color: white;
+            color: var(--secondary-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block; /* Make the link behave like a button */
+        }
+
+        .product-card a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-links {
+                margin-top: 10px;
+                flex-direction: column;
+            }
+            .nav-links li {
+                margin: 5px 0;
+            }
+            .products-grid {
+                grid-template-columns: 1fr; /* Stack products vertically on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">VibeBot-AI</div>
+        <ul class="nav-links">
+            <li><a href="newserver.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="title-section">
+        <h1>Our Products</h1>
+    </div>
+    <div class="products-container">
+        <h2>Explore Our Range</h2>
+        <div class="products-grid">
+
+<div class="product-card">
+    <h3>Wayona Nylon Braided USB Cable...</h3>
+    <p>Actual Price: ₹1099, Discounted Price: ₹399, Discount: 64% off, Rating: 4.2</p>
+    <a href="https://www.amazon.in/Wayona-Braided-WN3LG1-Syncing-Charging/dp/B07JW9H4J1/ref=sr_1_1?qid=1672909124&s=electronics&sr=1-1">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Caprigo Heavy Duty TV Wall Mount...</h3>
+    <p>Actual Price: ₹999, Discounted Price: ₹399, Discount: 60%, Rating: 4</p>
+    <a href="https://www.amazon.in/Maxicom-B-28-Universal-Bracket-inches/dp/B0758F7KK7/ref=sr_1_274?qid=1672909138&s=electronics&sr=1-274">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Fire-Boltt Ninja Call Pro Plus...</h3>
+    <p>Actual Price: ₹19999, Discounted Price: ₹1799, Discount: 91%, Rating: 4.2</p>
+    <a href="https://www.amazon.in/Fire-Boltt-Bluetooth-Calling-Assistance-Resolution/dp/B0BF57RN3K/ref=sr_1_1?qid=1672895748&s=electronics&sr=1-1">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Fire-Boltt Phoenix Smart Watch...</h3>
+    <p>Actual Price: ₹4999, Discounted Price: ₹1998, Discount: 75%, Rating: 4.3</p>
+    <a href="https://www.amazon.in/Fire-Boltt-Phoenix-Bluetooth-Calling-Monitoring/dp/B0B3RRWSF6/ref=sr_1_4?qid=1672895748&s=electronics&sr=1-4">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Nokia 105 Single SIM Mobile Phone...</h3>
+    <p>Actual Price: ₹1599, Discounted Price: ₹1299, Discount: 19%, Rating: 4</p>
+    <a href="https://www.amazon.in/Nokia-105-Single-Wireless-Charcoal/dp/B09V2Q4QVQ/ref=sr_1_14?qid=1672895748&s=electronics&sr=1-14">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>MI Power Bank 3i 20000mAh...</h3>
+    <p>Actual Price: ₹2499, Discounted Price: ₹1499, Discount: 40%, Rating: 4.3</p>
+    <a href="https://www.amazon.in/20000mAH-Li-Polymer-Power-Charging-Midnight/dp/B08MC57J31/ref=sr_1_24?qid=1672895748&s=electronics&sr=1-24">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>ELV Car Mount Adjustable Phone Holder...</h3>
+    <p>Actual Price: ₹999, Discounted Price: ₹349, Discount: 65%, Rating: 3.9</p>
+    <a href="https://www.amazon.in/Adjustable-Holder-Universal-Windshield-Smartphones/dp/B0746JGVDS/ref=sr_1_26?qid=1672895755&s=electronics&sr=1-26">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Samsung 25W USB Travel Adapter...</h3>
+    <p>Actual Price: ₹1699, Discounted Price: ₹1219, Discount: 28%, Rating: 4.4</p>
+    <a href="https://www.amazon.in/Samsung-25W-Travel-Adapter/dp/B08VFF6JQ8/ref=sr_1_27?qid=1672895755&s=electronics&sr=1-27">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Noise ColorFit Pulse Grand Smart...</h3>
+    <p>Actual Price: ₹3999, Discounted Price: ₹1599, Discount: 60%, Rating: 4</p>
+    <a href="https://www.amazon.in/Noise- ColorFit-Display-Monitoring-Smartwatches/dp/B09NVPSCQT/ref=sr_1_28?qid=1672895755&s=electronics&sr=1-28">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Ambrane Unbreakable 60W Fast Charging...</h3>
+    <p>Actual Price: ₹349, Discounted Price: ₹199, Discount: 43% off, Rating: 4.0</p>
+    <a href="https://www.amazon.in/Ambrane-Unbreakable-Charging-Braided-Cable/dp/B098NS6PVG/ref=sr_1_2?qid=1672909124&s=electronics&sr=1-2">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Sounce Fast Phone Charging Cable...</h3>
+    <p>Actual Price: ₹1899, Discounted Price: ₹199, Discount: 90% off, Rating: 3.9</p>
+    <a href="https://www.amazon.in/Sounce-iPhone-Charging-Compatible-Devices/dp/B096MSW6CT/ref=sr_1_3?qid=1672909124&s=electronics&sr=1-3">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>boAt Deuce USB 300 2 in 1...</h3>
+    <p>Actual Price: ₹699, Discounted Price: ₹329, Discount: 53% off, Rating: 4.2</p>
+    <a href="https://www.amazon.in/Deuce-300-Resistant-Tangle-Free-Transmission/dp/B08HDJ86NZ/ref=sr_1_4?qid=1672909124&s=electronics&sr=1-4">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Portronics Konnect L 1.2M Fast...</h3>
+    <p>Actual Price: ₹399, Discounted Price: ₹154, Discount: 61% off, Rating: 4.2</p>
+    <a href="https://www.amazon.in/Portronics-Konnect-POR-1080-Charging-Function/dp/B08CF3B7N1/ref=sr_1_5?qid=1672909124&s=electronics&sr=1-5">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>pTron Solero TB301 3A Type-C...</h3>
+    <p>Actual Price: ₹1000, Discounted Price: ₹149, Discount: 85% off, Rating: 3.9</p>
+    <a href="https://www.amazon.in/Solero-TB301-Charging-480Mbps-1-5-Meter/dp/B08Y1TFSP6/ref=sr_1_6?qid=1672909124&s=electronics&sr=1-6">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>boAt Micro USB 55 Tangle-free...</h3>
+    <p>Actual Price: ₹499, Discounted Price: ₹176.63, Discount: 65% off, Rating: 4.1</p>
+    <a href="https://www.amazon.in/boAt-Micro-USB-Tangle-Free-Transmission/dp/B08WRWPM22/ref=sr_1_8?qid=1672909124&s=electronics&sr=1-8">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>MI Usb Type-C Cable Smartphone...</h3>
+    <p>Actual Price: ₹299, Discounted Price: ₹229, Discount: 23% off, Rating: 4.3</p>
+    <a href="https://www.amazon.in/MI-MTCY001IN-USB-Type-C-Cable/dp/B08DDRGWTJ/ref=sr_1_9?qid=1672909124&s=electronics&sr=1-9">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>TP-Link USB WiFi Adapter for PC...</h3>
+    <p>Actual Price: ₹999, Discounted Price: ₹499, Discount: 50% off, Rating: 4.2</p>
+    <a href="https://www.amazon.in/TP-Link-TL-WN725N-150Mbps-Wireless-Adapter/dp/B008IFXQFU/ref=sr_1_10?qid=1672909124&s=electronics&sr=1-10">View Details</a>
+</div>
+<div class="product-card">
+    <h3>pTron Solero T351 Fast Charging Cable...</h3>
+    <p>Actual Price: ₹999, Discounted Price: ₹199, Discount: 80%, Rating: 3.9</p>
+    <a href="https://www.amazon.in/pTron-3-5Amps-Charging-480Mbps-Smartphones/dp/B0B4HJNPV4/ref=sr_1_38?qid=1672909125&s=electronics&sr=1-38">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Aquasure From Aquaguard Amaze RO...</h3>
+    <p>Actual Price: ₹16000, Discounted Price: ₹8199, Discount: 49%, Rating: 3.9</p>
+    <a href="https://www.amazon.in/Eureka-Forbes-Amaze-RO-MTDS/dp/B07YC8JHMB/ref=sr_1_223?qid=1672923603&s=kitchen&sr=1-223">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Wipro Vesta 1200 Watt GD203 Dry Iron...</h3>
+    <p>Actual Price: ₹1950, Discounted Price: ₹1049, Discount: 46%, Rating: 3.8</p>
+    <a href="https://www.amazon.in/Heavyweight-Automatic-bacterial-Weilburger-Soleplate/dp/B0B84KSH3X/ref=sr_1_227?qid=1672923603&s=kitchen&sr=1-227">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Inalsa Electric Kettle Prism Inox...</h3>
+    <p>Actual Price: ₹2995, Discounted Price: ₹1182, Discount: 61%, Rating: 4.2</p>
+    <a href="https://www.amazon.in/Inalsa-Electric-Kettle-Prism-Inox/dp/B08HLC7Z3G/ref=sr_1_229?qid=1672923603&s=kitchen&sr=1-229">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>VRPRIME Lint Roller Lint Remover...</h3>
+    <p>Actual Price: ₹999, Discounted Price: ₹499, Discount: 50%, Rating: 4.6</p>
+    <a href="https://www.amazon.in/VRPRIME-Remover-Reusable-Easy-Tear-Furniture/dp/B0BN6M3TCM/ref=sr_1_230?qid=1672923603&s=kitchen&sr=1-230">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Philips AC1215/20 Air Purifier...</h3>
+    <p>Actual Price: ₹11995, Discounted Price: ₹8799, Discount: 27%, Rating: 4.1</p>
+    <a href="https://www.amazon.in/Philips-AC1215-20-Purifier-White/dp/B01L6MT7E0/ref=sr_1_231?qid=1672923603&s=kitchen&sr=1-231">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Heart Home Waterproof Round Laundry Bag...</h3>
+    <p>Actual Price: ₹499, Discounted Price: ₹199, Discount: 60%, Rating: 4</p>
+    <a href="https://www.amazon.in/Heart-Home-Foldable-Organiser-HEARTXY11447/dp/B08VGM3YMF/ref=sr_1_196?qid=1672923601&s=kitchen&sr=1-196">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>MILTON Smart Egg Boiler 360-Watts...</h3>
+    <p>Actual Price: ₹1899, Discounted Price: ₹1099, Discount: 42%, Rating: 4.3</p>
+    <a href="https://www.amazon.in/MILTON-Smart-Egg-Boiler-Transparent/dp/B08TTRVWKY/ref=sr_1_197?qid=1672923601&s=kitchen&sr=1-197">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>iBELL SEK15L Premium Stainless Steel Kettle...</h3>
+    <p>Actual Price: ₹1490, Discounted Price: ₹664, Discount: 55%, Rating: 4</p>
+    <a href="https://www.amazon.in/Premium-Stainless-Electric-Cut-Off-Feature/dp/B07T4D9FNY/ref=sr_1_199?qid=1672923601&s=kitchen&sr=1-199">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Tosaa T2STSR Sandwich Gas Toaster...</h3>
+    <p>Actual Price: ₹350, Discounted Price: ₹260, Discount: 26%, Rating: 3.9</p>
+    <a href="https://www.amazon.in/Tosaa-Nonstick-Sandwich-Toaster-Regular/dp/B07RX42D3D/ref=sr_1_200?qid=1672923601&s=kitchen&sr=1-200">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>V-Guard Divino 5 Star Rated Water Heater...</h3>
+    <p>Actual Price: ₹8500, Discounted Price: ₹6499, Discount: 24%, Rating: 4.4</p>
+    <a href="https://www.amazon.in/V-Guard-Divino-Storage-15-Vertical/dp/B08WRKSF9D/ref=sr_1_201?qid=1672923601&s=kitchen&sr=1-201">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Akiara Mini Sewing Machine with Table...</h3>
+    <p>Actual Price: ₹2499, Discounted Price: ₹1484, Discount: 41%, Rating: 3.7</p>
+    <a href="https://www.amazon.in/akiara-Machine-Stitching-extension-adapter/dp/B09R83SFYV/ref=sr_1_202?qid=1672923601&s=kitchen&sr=1-202">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Usha Steam Pro SI 3713 Steam Iron...</h3>
+    <p>Actual Price: ₹1560, Discounted Price: ₹999, Discount: 36%, Rating: 3.6</p>
+    <a href="https://www.amazon.in/Usha-Steam-3713-1300-Watt-White/dp/B07989VV5K/ref=sr_1_203?qid=1672923601&s=kitchen&sr=1-203">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Wonderchef Nutri-blend Kitchen Machine...</h3>
+    <p>Actual Price: ₹6500, Discounted Price: ₹3299, Discount: 49%, Rating: 3.7</p>
+    <a href="https://www.amazon.in/Wonderchef-Nutri-Blend-CKM-Jars-Black/dp/B07FL3WRX5/ref=sr_1_204?qid=1672923601&s=kitchen&sr=1-204">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>WIDEWINGS Electric Handheld Milk Frother...</h3>
+    <p>Actual Price: ₹999, Discounted Price: ₹259, Discount: 74%, Rating: 4</p>
+    <a href="https://www.amazon.in/WIDEWINGS-Electric-Handheld-Frother-Blender/dp/B0BPCJM7TB/ref=sr_1_205?qid=1672923601&s=kitchen&sr=1-205">View Details</a>
+</div>
+
+<div class="product-card">
+    <h3>Morphy Richards Icon Superb Mixer Grinder...</h3>
+    <p>Actual Price: ₹7795, Discounted Price: ₹3249, Discount: 58%, Rating: 4.2</p>
+    <a href="https://www.amazon.in/Morphy-Richards-Icon-Superb-Grinder/dp/B08H673XKN/ref=sr_1_206?qid=1672923601&s=kitchen&sr=1-206">View Details</a>
+</div>
+
+        </div>
+    </div>
+</body>
+</html>

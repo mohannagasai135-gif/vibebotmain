@@ -1,0 +1,3157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeBot-AI Sentiment Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+        :root {
+            --primary-color: #FF9900;
+            --secondary-color: #146EB4;
+            --accent-color: #FF4F00;
+            --light-color: #f8f9fa;
+            --dark-color: #232F3E;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7ff;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #008000;
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(108, 99, 255, 0.4);
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .chatbot-container {
+            flex: 2;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chatbot-header i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .chatbot-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            height: 400px;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9ff;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+
+        .bot-message {
+            justify-content: flex-start;
+        }
+
+        .user-message {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .bot-message .message-content {
+            background-color: white;
+            border: 1px solid #eee;
+            border-bottom-left-radius: 4px;
+            color: var(--dark-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-message .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .chat-input button {
+            margin-left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .recommendations-container {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .recommendations-header {
+            background-color: #A47DAB;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .recommendations-header i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .recommendations-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .recommendations-content {
+            padding: 20px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #666;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            height: 160px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .product-details {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .discount {
+            color: var(--success-color);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            color: #ffb400;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .product-rating i {
+            margin-right: 3px;
+        }
+
+        .sentiment-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .positive {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .negative {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        .neutral {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+
+        .typing-indicator {
+            display: flex;
+            padding: 10px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #aaa;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-5px);
+            }
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .footer-links li {
+            margin: 0 15px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            margin: 20px 0;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 20px;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .error {
+            color: var(--danger-color);
+            font-weight: 500;
+        }
+
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .option-btn {
+            padding: 8px 12px;
+            background-color: #f0f2f5;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .option-btn:hover {
+            background-color: #e1e4e8;
+            border-color: #c4c9d0;
+        }
+
+        .option-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .product-link {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .product-link:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-robot"></i>
+                    VibeBot-AI Sentiment Analyzer
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>AI Review Analysis for Smarter Shopping</h1>
+            <p>Explore customer sentiment and product recommendations from product data.</p>
+            <a href="#chatbot" class="btn">Start Analyzing</a>
+        </div>
+    </section>
+
+    <section class="container" id="chatbot">
+        <div class="main-content">
+            <div class="chatbot-container">
+                <div class="chatbot-header">
+                    <i class="fas fa-comment-dots"></i>
+                    <h2>VibeBot Product Analyst</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            Welcome to the Product Sentiment Analyzer! I can help you explore product reviews and recommendations.
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="Type your response..." autocomplete="off">
+                    <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            <div class="recommendations-container">
+                <div class="recommendations-header">
+                    <i class="fas fa-gifts"></i>
+                    <h2>Recommended Products</h2>
+                </div>
+                <div class="recommendations-content" id="recommendations-content">
+                    <p>Complete the steps to see personalized recommendations!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <h3>VibeBot-AI Sentiment Analyzer</h3>
+                <p>Analyzing customer sentiment to provide better product recommendations</p>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <p class="copyright">© 2025 VibeBot Product Analyzer. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // Three-level hierarchical categories structure
+        const categoryStructure = {
+            "Electronics": {
+                "Cables & Adapters": {
+                    "USB Cables": ["USBCables", "USBCablesTypeC"],
+                    "HDMI Cables": ["HDMICables", "HDMICablesHighSpeed"],
+                    "Audio/Video Cables": ["RCACables", "OpticalCables"]
+                },
+                "Networking": {
+                    "Wireless Adapters": ["WirelessUSBAdapters", "WirelessPCIAdapters"],
+                    "Routers": ["HomeRouters", "GamingRouters"],
+                    "Network Switches": ["5PortSwitches", "8PortSwitches"]
+                },
+                "TV & Video": {
+                    "Smart TVs": ["SmartTelevisions", "AndroidTVs"],
+                    "Projectors": ["HomeProjectors", "OfficeProjectors"],
+                    "Streaming Devices": ["StreamingSticks", "StreamingBoxes"]
+                }
+            },
+            "Home Appliances": {
+                "Kitchen": {
+                    "Mixer Grinders": ["500WMixers", "750WMixers"],
+                    "Air Fryers": ["3LAirFryers", "5LAirFryers"],
+                    "Electric Kettles": ["1LKettles", "1.5LKettles"]
+                },
+                "Cleaning": {
+                    "Vacuum Cleaners": ["HandheldVacuums", "RoboticVacuums"],
+                    "Water Purifiers": ["ROPurifiers", "UVPurifiers"],
+                    "Air Purifiers": ["HEPAPurifiers", "Ionizers"]
+                }
+            },
+            "Mobile Accessories": {
+                "Chargers": {
+                    "Wall Chargers": ["18WChargers", "30WChargers"],
+                    "Car Chargers": ["SinglePortCarChargers", "DualPortCarChargers"],
+                    "Wireless Chargers": ["10WWireless", "15WWireless"]
+                },
+                "Audio": {
+                    "Earphones": ["InEar", "Neckbands"],
+                    "Headphones": ["OnEar", "OverEar"],
+                    "Speakers": ["BluetoothSpeakers", "SmartSpeakers"]
+                }
+            }
+        };
+
+        // Price ranges and rating ranges
+        const priceRanges = [
+            { label: "Under ₹500", min: 0, max: 500 },
+            { label: "₹500 - ₹1,000", min: 500, max: 1000 },
+            { label: "₹1,000 - ₹2,500", min: 1000, max: 2500 },
+            { label: "₹2,500 - ₹5,000", min: 2500, max: 5000 },
+            { label: "₹5,000 - ₹10,000", min: 5000, max: 10000 },
+            { label: "Over ₹10,000", min: 10000, max: Infinity }
+        ];
+
+        const ratingRanges = [
+            { label: "4.5+ ⭐ (Excellent)", min: 4.5, max: 5 },
+            { label: "4.0 - 4.5 ⭐ (Very Good)", min: 4.0, max: 4.5 },
+            { label: "3.5 - 4.0 ⭐ (Good)", min: 3.5, max: 4.0 },
+            { label: "3.0 - 3.5 ⭐ (Average)", min: 3.0, max: 3.5 },
+            { label: "Below 3.0 ⭐ (Poor)", min: 0, max: 3.0 }
+        ];
+
+        // Enhanced product dataset with proper names and links
+        const productDataset = [
+        
+    {
+        "product_name": "Wayona Nylon Braided USB to Lightning Fast Charging and Data Sync Cable",
+        "category": "USBCables",
+        "actual_price": "₹1099",
+        "discounted_price": "₹399",
+        "discount_percentage": "64% off",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Wayona-Braided-WN3LG1-Syncing-Charging/dp/B07JW9H4J1/ref=sr_1_1?qid=1672909124&s=electronics&sr=1-1",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/51UsScvHQNL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "Caprigo Heavy Duty TV Wall Mount Bracket for 14 to 32 Inch LED/HD/Smart TV’s",
+        "category": "TVWall&CeilingMounts",
+        "actual_price": "₹999",
+        "discounted_price": "₹399",
+        "discount_percentage": "60%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Maxicom-B-28-Universal-Bracket-inches/dp/B0758F7KK7/ref=sr_1_274?qid=1672909138&s=electronics&sr=1-274",
+        "img_link": "https://m.media-amazon.com/images/I/41js3ITzVHL._SY300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "Fire-Boltt Ninja Call Pro Plus Smart Watch",
+        "category": "SmartWatches",
+        "actual_price": "₹19999",
+        "discounted_price": "₹1799",
+        "discount_percentage": "91%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Fire-Boltt-Bluetooth-Calling-Assistance-Resolution/dp/B0BF57RN3K/ref=sr_1_1?qid=1672895748&s=electronics&sr=1-1",
+        "img_link": "https://m.media-amazon.com/images/I/41WCgGbvwhL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1799
+    },
+    {
+        "product_name": "Fire-Boltt Phoenix Smart Watch with Bluetooth Calling",
+        "category": "SmartWatches",
+        "actual_price": "₹4999",
+        "discounted_price": "₹1998",
+        "discount_percentage": "75%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Fire-Boltt-Phoenix-Bluetooth-Calling-Monitoring/dp/B0B3RRWSF6/ref=sr_1_4?qid=1672895748&s=electronics&sr=1-4",
+        "img_link": "https://m.media-amazon.com/images/I/41d69zua5fL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1998
+    },
+    {
+        "product_name": "Nokia 105 Single SIM, Keypad Mobile Phone",
+        "category": "BasicMobiles",
+        "actual_price": "₹1599",
+        "discounted_price": "₹1299",
+        "discount_percentage": "19%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Nokia-105-Single-Wireless-Charcoal/dp/B09V2Q4QVQ/ref=sr_1_14?qid=1672895748&s=electronics&sr=1-14",
+        "img_link": "https://m.media-amazon.com/images/I/41Wd9J6nfpL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1299
+    },
+    {
+        "product_name": "MI Power Bank 3i 20000mAh Lithium Polymer",
+        "category": "PowerBanks",
+        "actual_price": "₹2499",
+        "discounted_price": "₹1499",
+        "discount_percentage": "40%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/20000mAH-Li-Polymer-Power-Charging-Midnight/dp/B08MC57J31/ref=sr_1_24?qid=1672895748&s=electronics&sr=1-24",
+        "img_link": "https://m.media-amazon.com/images/I/41J2W8DASzS._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1499
+    },
+    {
+        "product_name": "ELV Car Mount Adjustable Car Phone Holder",
+        "category": "Cradles",
+        "actual_price": "₹999",
+        "discounted_price": "₹349",
+        "discount_percentage": "65%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Adjustable -Holder-Universal-Windshield-Smartphones/dp/B0746JGVDS/ref=sr_1_26?qid=1672895755&s=electronics&sr=1-26",
+        "img_link": "https://m.media-amazon.com/images/I/41ZK4aM4zgL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 349
+    },
+    {
+        "product_name": "Samsung 25W USB Travel Adapter",
+        "category": "WallChargers",
+        "actual_price": "₹1699",
+        "discounted_price": "₹1219",
+        "discount_percentage": "28%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Samsung-25W-Travel-Adapter/dp/B08VFF6JQ8/ref=sr_1_27?qid=1672895755&s=electronics&sr=1-27",
+        "img_link": "https://m.media-amazon.com/images/I/21uXmiH98wL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1219
+    },
+    {
+        "product_name": "Noise ColorFit Pulse Grand Smart Watch",
+        "category": "SmartWatches",
+        "actual_price": "₹3999",
+        "discounted_price": "₹1599",
+        "discount_percentage": "60%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Noise-ColorFit-Display-Monitoring-Smartwatches/dp/B09NVPSCQT/ref=sr_1_28?qid=1672895755&s=electronics&sr=1-28",
+        "img_link": "https://m.media-amazon.com/images/I/41qqmdUWnhL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1599
+    },
+    {
+        "product_name": "Ambrane Unbreakable 60W / 3A Fast Charging Braided Type C Cable",
+        "category": "USBCables",
+        "actual_price": "₹349",
+        "discounted_price": "₹199",
+        "discount_percentage": "43% off",
+        "rating": 4.0,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Ambrane-Unbreakable-Charging-Braided-Cable/dp/B098NS6PVG/ref=sr_1_2?qid=1672909124&s=electronics&sr=1-2",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31zOsqQOAOL._SY445_SX342_QL70_FMwebp_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "Sounce Fast Phone Charging Cable & Data Sync USB Cable",
+        "category": "USBCables",
+        "actual_price": "₹1899",
+        "discounted_price": "₹199",
+        "discount_percentage": "90% off",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Sounce-iPhone-Charging-Compatible-Devices/dp/B096MSW6CT/ref=sr_1_3?qid=1672909124&s=electronics&sr=1-3",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31IvNJZnmdL._SY445_SX342_QL70_FMwebp_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "boAt Deuce USB 300 2 in 1 Type-C & Micro USB Cable",
+        "category": "USBCables",
+        "actual_price": "₹699",
+        "discounted_price": "₹329",
+        "discount_percentage": "53% off",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Deuce-300-Resistant-Tangle-Free-Transmission/dp/B08HDJ86NZ/ref=sr_1_4?qid=1672909124&s=electronics&sr=1-4",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31VzNhhqifL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 329
+    },
+    {
+        "product_name": "Portronics Konnect L 1.2M Fast Charging 3A 8 Pin USB Cable",
+        "category": "USBCables",
+        "actual_price": "₹399",
+        "discounted_price": "₹154",
+        "discount_percentage": "61% off",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Portronics-Konnect-POR-1080-Charging-Function/dp/B08CF3B7N1/ref=sr_1_5?qid=1672909124&s=electronics&sr=1-5",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31VzNhhqifL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 154
+    },
+    {
+        "product_name": "pTron Solero TB301 3A Type-C Data and Fast Charging Cable",
+        "category": "USBCables",
+        "actual_price": "₹1000",
+        "discounted_price": "₹149",
+        "discount_percentage": "85% off",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Solero-TB301-Charging-480Mbps-1-5-Meter/dp/B08Y1TFSP6/ref=sr_1_6?qid=1672909124&s=electronics&sr=1-6",
+        "img_link": "https://m.media-amazon.com/images/I/31wOPjcSxlL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 149
+    },
+    {
+        "product_name": "boAt Micro USB 55 Tangle-free Cable",
+        "category": "USBCables",
+        "actual_price": "₹499",
+        "discounted_price": "₹176.63",
+        "discount_percentage": "65% off",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/boAt-Micro-USB-Tangle-Free-Transmission/dp/B08WRWPM22/ref=sr_1_8?qid=1672909124&s=electronics&sr=1-8",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41jlwEZpa5L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 176.63
+    },
+    {
+        "product_name": "MI Usb Type-C Cable Smartphone",
+        "category": "USBCables",
+        "actual_price": "₹299",
+        "discounted_price": "₹229",
+        "discount_percentage": "23% off",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/MI-MTCY001IN-USB-Type-C-Cable/dp/B08DDRGWTJ/ref=sr_1_9?qid=1672909124&s=electronics&sr=1-9",
+        "img_link": "https://m.media-amazon.com/images/I/31XO-wfGGGL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 229
+    },
+    {
+        "product_name": "TP-Link USB WiFi Adapter for PC",
+        "category": "WirelessUSBAdapters",
+        "actual_price": "₹999",
+        "discounted_price": "₹499",
+        "discount_percentage": "50% off",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/TP-Link-TL-WN725N-150Mbps-Wireless-Adapter/dp/B008IFXQFU/ref=sr_1_10?qid=1672909124&s=electronics&sr=1-10",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31e6ElWRymL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 499
+    },
+    {
+        "product_name": "LG 80 cm (32 inches) HD Ready Smart LED TV",
+        "category": "SmartTelevisions",
+        "actual_price": "₹21990",
+        "discounted_price": "₹13490",
+        "discount_percentage": "39% off",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/LG-inches-Ready-Smart-32LM563BPTC/dp/B08DPLCM6T/ref=sr_1_21?qid=1672909124&s=electronics&sr=1-21",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/51v-2Nzr+ML._SY300_SY300_.jpg",
+        "numeric_price": 13490
+    },
+    {
+        "product_name": "Samsung 80 cm (32 Inches) Wondertainment Series HD Ready LED Smart TV",
+        "category": "SmartTelevisions",
+        "actual_price": "₹22900",
+        "discounted_price": "₹13490",
+        "discount_percentage": "41% off",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Samsung-Inches-Wondertainment-UA32T4340BKXXL-Glossy/dp/B09F6S8BT6/ref=sr_1_24?qid=1672909124&s=electronics&sr=1-24",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/51q3+E64azL._SX300_SY300_.jpg",
+        "numeric_price": 13490
+    },
+    {
+        "product_name": "Duracell USB Lightning Apple Certified Braided Sync & Charge Cable",
+        "category": "USBCables",
+        "actual_price": "₹1799",
+        "discounted_price": "₹970",
+        "discount_percentage": "46% off",
+        "rating": 4.5,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/DURACELL-Lightning-Certified-braided-Devices/dp/B09C6HXFC1/ref=sr_1_22?qid=1672909124&s=electronics&sr=1-22",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41TZJiPRRwL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 970
+    },
+    {
+        "product_name": "Tizum High Speed HDMI Cable with Ethernet",
+        "category": "HDMICables",
+        "actual_price": "₹699",
+        "discounted_price": "₹199",
+        "discount_percentage": "72% off",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/TIZUM-Slim-1-5m-HDMI-Cable/dp/B01M4GGIVU/ref=sr_1_27?qid=1672909125&s=electronics&sr=1-27",
+        "img_link": "https://m.media-amazon.com/images/I/41da4tk7N+L._SY300_SX300_QL70_FMwebp_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "OnePlus 80 cm (32 inches) Y Series HD Ready LED Smart Android TV 32Y1 (Black)",
+        "category": "SmartTelevisions",
+        "actual_price": "₹19999",
+        "discounted_price": "₹14999",
+        "discount_percentage": "25%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/OnePlus-inches-Ready-Android-32Y1/dp/B08B42LWKN/ref=sr_1_29?qid=1672909125&s=electronics&sr=1-29",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41WE9ZGEC4L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 14999
+    },
+    {
+        "product_name": "Ambrane Unbreakable 3 in 1 Fast Charging Braided Multipurpose Cable for Speaker with 2.1 A Speed - 1.25 meter, Black",
+        "category": "USBCables",
+        "actual_price": "₹399",
+        "discounted_price": "₹299",
+        "discount_percentage": "25%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Ambrane-Unbreakable-Charging-Braided-Multipurpose/dp/B094JNXNPV/ref=sr_1_31?qid=1672909125&s=electronics&sr=1-31",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41GeM83DzzL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 299
+    },
+    {
+        "product_name": "Duracell USB C To Lightning Apple Certified (Mfi) Braided Sync & Charge Cable For Iphone, Ipad And Ipod. Fast Charging Lightning Cable, 3.9 Feet (1.2M) - Black",
+        "category": "USBCables",
+        "actual_price": "₹1999",
+        "discounted_price": "₹970",
+        "discount_percentage": "51%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/DURACELL-Lightning-Certified-braided-Devices/dp/B09W5XR9RT/ref=sr_1_32?qid=1672909125&s=electronics&sr=1-32",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/4177nw8okbL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 970
+    },
+    {
+        "product_name": "boAt A400 USB Type-C to USB-A 2.0 Male Data Cable, 2 Meter (Black)",
+        "category": "USBCables",
+        "actual_price": "₹999",
+        "discounted_price": "₹299",
+        "discount_percentage": "70%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/A400-Type-C-Cable-Meter-Black/dp/B077Z65HSD/ref=sr_1_33?qid=1672909125&s=electronics&sr=1-33",
+        "img_link": "https://m.media-amazon.com/images/I/41jk4zYjTsL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 299
+    },
+    {
+        "product_name": "AmazonBasics USB 2.0 - A-Male to A-Female Extension Cable for Personal Computer, Printer (Black, 9.8 Feet/3 Meters)",
+        "category": "USBCables",
+        "actual_price": "₹750",
+        "discounted_price": "₹199",
+        "discount_percentage": "73%",
+        "rating": 4.5,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-Extension-Cable-Male-Female/dp/B00NH11PEY/ref=sr_1_34?qid=1672909125&s=electronics&sr=1-34",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images /W/WEBP_402378-T2/images/I/41Fqm0bR7PL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "Ambrane 60W / 3A Type C Fast Charging Unbreakable 1.5m L Shaped Braided Cable, PD Technology, 480Mbps Data Transfer for Smartphones, Tablet, Laptops & other type c devices (ABLC10, Black)",
+        "category": "USBCables",
+        "actual_price": "₹499",
+        "discounted_price": "₹179",
+        "discount_percentage": "64%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Ambrane-Charging-Unbreakable-Braided-Connector/dp/B09CMM3VGK/ref=sr_1_35?qid=1672909125&s=electronics&sr=1-35",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41cCZ5EPnvL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 179
+    },
+    {
+        "product_name": "Zoul USB C 60W Fast Charging 3A 6ft/2M Long Type C Nylon Braided Data Cable Quick Charger Cable QC 3.0 for Samsung Galaxy M31S M30 S10 S9 S20 Plus, Note 10 9 8, A20e A40 A50 A70 (2M, Grey)",
+        "category": "USBCables",
+        "actual_price": "₹1099",
+        "discounted_price": "₹389",
+        "discount_percentage": "65%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Charging-Braided-Charger-Samsung-Galaxy/dp/B08QSC1XY8/ref=sr_1_36?qid=1672909125&s=electronics&sr=1-36",
+        "img_link": "https://m.media-amazon.com/images/I/419QKVTxaSL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 389
+    },
+    {
+        "product_name": "Samsung Original Type C to C Cable - 3.28 Feet (1 Meter), White",
+        "category": "USBCables",
+        "actual_price": "₹599",
+        "discounted_price": "₹599",
+        "discount_percentage": "0%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Samsung-Original-Type-Cable-Meter/dp/B008FWZGSG/ref=sr_1_37?qid=1672909125&s=electronics&sr=1-37",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/11ICusapw3L._SY300_SX300_QL70_FMwebp_.jpg",
+        "numeric_price": 599
+    },
+    {
+        "product_name": "pTron Solero T351 3.5Amps Fast Charging Type-C to Type-C PD Data & Charging USB Cable, Made in India, 480Mbps Data Sync, Durable 1 Meter Long Cable for Type-C Smartphones, Tablets & Laptops (Black)",
+        "category": "USBCables",
+        "actual_price": "₹999",
+        "discounted_price": "₹199",
+        "discount_percentage": "80%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/pTron-3-5Amps-Charging-480Mbps-Smartphones/dp/B0B4HJNPV4/ref=sr_1_38?qid=1672909125&s=electronics&sr=1-38",
+        "img_link": "https://m.media-amazon.com/images/I/41wN7jooz0L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "pTron Solero MB301 3A Micro USB Data & Charging Cable, Made in India, 480Mbps Data Sync, Strong & Durable 1.5-Meter Nylon Braided USB Cable for Micro USB Devices - (Black)",
+        "category": "USBCables",
+        "actual_price": "₹666.66",
+        "discounted_price": "₹99",
+        "discount_percentage": "85%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Solero-MB301-Charging-480Mbps-1-5-Meter/dp/B08Y1SJVV5/ref=sr_1_39?qid=1672909125&s=electronics&sr=1-39",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31ew3okQR2L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 99
+    },
+    {
+        "product_name": "Amazonbasics Nylon Braided Usb-C To Lightning Cable, Fast Charging Mfi Certified Smartphone, Iphone Charger (6-Foot, Dark Grey)",
+        "category": "USBCables",
+        "actual_price": "₹1900",
+        "discounted_price": "₹899",
+        "discount_percentage": "53%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-Apple-Certified-Lightning-Charging/dp/B07XLCFSSN/ref=sr_1_40?qid=1672909125&s=electronics&sr=1-40",
+        "img_link": "https://m.media-amazon.com/images/I/3183iGEWksL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 899
+    },
+    {
+        "product_name": "VW 80 cm (32 inches) Frameless Series HD Ready LED TV VW32A (Black)",
+        "category": "StandardTelevisions",
+        "actual_price": "₹12999",
+        "discounted_price": "₹6999",
+        "discount_percentage": "46%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Visio-World-inches-VW32A-Ready/dp/B07MKFNHKG/ref=sr_1_58?qid=1672909126&s=electronics&sr=1-58",
+        "img_link": "https://m.media-amazon.com/images/I/418GxB04szL._SY300_SX300_QL70_FMwebp_.jpg",
+        "numeric_price": 6999
+    },
+    {
+        "product_name": "Ambrane Unbreakable 3A Fast Charging Braided Type C Cable 1.5 Meter (RCT15, Blue) Supports QC 2.0/3.0 Charging",
+        "category": "USBCables",
+        "actual_price": "₹349",
+        "discounted_price": "₹199",
+        "discount_percentage": "43%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Ambrane-Unbreakable-Charging-RCT15-Supports/dp/B0BFWGBX61/ref=sr_1_59?qid=1672909126&s=electronics&sr=1-59",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41rbKciLrcL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "Tata Sky Universal Remote",
+        "category": "RemoteControls",
+        "actual_price": "₹499",
+        "discounted_price": "₹230",
+        "discount_percentage": "54%",
+        "rating": 3.7,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/TATASKY-Universal-Remote/dp/B01N90RZ4M/ref=sr_1_60?qid=1672909126&s=electronics&sr=1-60",
+        "img_link": "https://m.media-amazon.com/images/I/315GdnF+LcL._SY300_SX300_.jpg",
+        "numeric_price": 230
+    },
+    {
+        "product_name": "TP-LINK WiFi Dongle 300 Mbps Mini Wireless Network USB Wi-Fi Adapter for PC Desktop Laptop",
+        "category": "WirelessUSBAdapters",
+        "actual_price": "₹1399",
+        "discounted_price": "₹649",
+        "discount_percentage": "54%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/TP-Link-TL-WN823N-300Mbps-Wireless-N-Adapter/dp/B0088TKTY2/ref=sr_1_61?qid=1672909126&s=electronics&sr=1-61",
+        "img_link": "https://m.media-amazon.com/images/I/41jxZkzNcnL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 649
+    },
+    {
+        "product_name": "OnePlus 80 cm (32 inches) Y Series HD Ready Smart Android LED TV 32 Y1S (Black)",
+        "category": "SmartTelevisions",
+        "actual_price": "₹21999",
+        "discounted_price": "₹15999",
+        "discount_percentage": "27%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/OnePlus-inches-Ready-Smart-Android/dp/B09Q5SWVBJ/ref=sr_1_63?qid=1672909126&s=electronics&sr=1-63",
+        "img_link": "https://m.media-amazon.com/images/I/512YHGuR4RL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 15999
+    },
+    {
+        "product_name": "Sounce 65W OnePlus Dash Warp Charge Cable, 6.5A Type-C to USB C PD Data Sync Fast Charging Cable Compatible with One Plus 8T/ 9/ 9R/ 9 pro/ 9RT/ 10R/ Nord & for All Type C Devices – Red, 1 Meter",
+        "category": "USBCables",
+        "actual_price": "₹999",
+        "discounted_price": "₹199",
+        "discount_percentage": "80%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Sounce-Type-C-Compatible-Smartphone-Charging/dp/B09RZS1NQT/ref=sr_1_41?qid=1672909125&s=electronics&sr=1-41",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41P2EdQI1ZL._SY445_SX342_QL70_FMwebp_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "OnePlus 126 cm (50 inches) Y Series 4K Ultra HD Smart Android LED TV 50Y1S Pro (Black)",
+        "category": "SmartTelevisions",
+        "actual_price": "₹45999",
+        "discounted_price": "₹32999",
+        "discount_percentage": "28%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/OnePlus-50-inches-Android-Pro/dp/B0B3MMYHYW/ref=sr_1_42?qid=1672909125&s=electronics&sr=1-42",
+        "img_link": "https://m.media-amazon.com/images/I/51hQfTroMzL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 32999
+    },
+    {
+        "product_name": "Duracell Type C To Type C 5A (100W) Braided Sync & Fast Charging Cable, 3.9 Feet (1.2M). USB C to C Cable, Supports PD & QC 3.0 Charging, 5 GBPS Data Transmission – Black",
+        "category": "USBCables",
+        "actual_price": "₹1999",
+        "discounted_price": "₹970",
+        "discount_percentage": "51%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/DURACELL-Type-C-braided-Charge-Cable/dp/B09C6HWG18/ref=sr_1_43?qid=1672909125&s=electronics&sr=1-43",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41v5BQZzfAL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 970
+    },
+    {
+        "product_name": "AmazonBasics USB 2.0 Cable - A-M ale to B-Male - for Personal Computer, Printer- 6 Feet (1.8 Meters), Black",
+        "category": "USBCables",
+        "actual_price": "₹695",
+        "discounted_price": "₹209",
+        "discount_percentage": "70%",
+        "rating": 4.5,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-USB-2-0-Cable-Male/dp/B00NH11KIK/ref=sr_1_44?qid=1672909126&s=electronics&sr=1-44",
+        "img_link": "https://m.media-amazon.com/images/I/4101vlzySzL._SY300_SX300_QL70_FMwebp_.jpg",
+        "numeric_price": 209
+    },
+    {
+        "product_name": "Mi 108 cm (43 inches) Full HD Android LED TV 4C | L43M6-INC (Black)",
+        "category": "SmartTelevisions",
+        "actual_price": "₹34999",
+        "discounted_price": "₹19999",
+        "discount_percentage": "43%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/inches-Full-Android-L43M6-INC-Black/dp/B09JPC82QC/ref=sr_1_45?qid=1672909125&s=electronics&sr=1-45",
+        "img_link": "https://m.media-amazon.com/images/I/41nsy8kxWUL._SY300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 19999
+    },
+    {
+        "product_name": "Wayona Nylon Braided 3A Lightning to USB A Syncing and Fast Charging Data Cable for iPhone, Ipad (3 FT Pack of 1, Black)",
+        "category": "USBCables",
+        "actual_price": "₹1099",
+        "discounted_price": "₹399",
+        "discount_percentage": "64%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Wayona-Braided-WN3LB1-Syncing-Charging/dp/B07JW1Y6XV/ref=sr_1_46?qid=1672909126&s=electronics&sr=1-46",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41rB0DnVFmL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "TP-Link Nano AC600 USB Wi-Fi Adapter(Archer T2U Nano)- 2.4G/5G Dual Band Wireless Network Adapter for PC Desktop Laptop, Mini Travel Size, Supports Windows 11,10, 8.1, 8, 7, XP/Mac OS 10.9-10.15",
+        "category": "WirelessUSBAdapters",
+        "actual_price": "₹1599",
+        "discounted_price": "₹999",
+        "discount_percentage": "38%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/TP-Link-Archer-T2U-Nano-Wireless/dp/B07KRCW6LZ/ref=sr_1_47?qid=1672909126&s=electronics&sr=1-47",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31EHCPHbSlL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 999
+    },
+    {
+        "product_name": "FLiX (Beetel USB to Micro USB PVC Data Sync & 2A Fast Charging Cable, Made in India, 480Mbps Data Sync, Solid Cable, 1 Meter Long USB Cable for Micro USB Devices (White)(XCD-M11)",
+        "category": "USBCables",
+        "actual_price": "₹199",
+        "discounted_price": "₹59",
+        "discount_percentage": "70%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/FLiX-Charging-480Mbps-Devices-XCD-M11/dp/B09NJN8L25/ref=sr_1_48?qid=1672909126&s=electronics&sr=1-48",
+        "img_link": "https://m.media-amazon.com/images/I /31v7NnnAItL._SY445_SX342_QL70_FMwebp_.jpg",
+        "numeric_price": 59
+    },
+    {
+        "product_name": "Wecool Nylon Braided Multifunction Fast Charging Cable For Android Smartphone, Ios And Type C Usb Devices, 3 In 1 Charging Cable, 3A, (3 Feet) (Black)",
+        "category": "USBCables",
+        "actual_price": "₹999",
+        "discounted_price": "₹333",
+        "discount_percentage": "67%",
+        "rating": 3.3,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/WeCool-Braided-Multifunction-Charging-Android/dp/B07XJYYH7L/ref=sr_1_49?qid=1672909126&s=electronics&sr=1-49",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41CnR1WhD3L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 333
+    },
+    {
+        "product_name": "D-Link DWA-131 300 Mbps Wireless Nano USB Adapter (Black)",
+        "category": "WirelessUSBAdapters",
+        "actual_price": "₹1208",
+        "discounted_price": "₹507",
+        "discount_percentage": "58%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/D-Link-DWA-131-Wireless-Adapter-Black/dp/B002PD61Y4/ref=sr_1_50?qid=1672909126&s=electronics&sr=1-50",
+        "img_link": "https://m.media-amazon.com/images/I/31+NwZ8gb1L._SX300_SY300_.jpg",
+        "numeric_price": 507
+    },
+    {
+        "product_name": "AmazonBasics High-Speed HDMI Cable, 6 Feet - Supports Ethernet, 3D, 4K video,Black",
+        "category": "HDMICables",
+        "actual_price": "₹475",
+        "discounted_price": "₹309",
+        "discount_percentage": "35%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-High-Speed-HDMI-Cable-Feet/dp/B014I8SSD0/ref=sr_1_51?qid=1672909126&s=electronics&sr=1-51",
+        "img_link": "https://m.media-amazon.com/images/I/41bCxnHksnL._SY300_SX300_QL70_FMwebp_.jpg",
+        "numeric_price": 309
+    },
+    {
+        "product_name": "7SEVEN® Compatible for Samsung Smart 4K Ultra HD TV Monitor Remote Control Replacement of Original Samsung TV Remote for LED OLED UHD QLED and Suitable for 6 7 8 Series Samsung TV with Hot Keys BN59-01259E",
+        "category": "RemoteControls",
+        "actual_price": "₹999",
+        "discounted_price": "₹399",
+        "discount_percentage": "60%",
+        "rating": 3.6,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/7SEVENTM-Compatible-Replacement-Original-BN59-01259E/dp/B09L8DSSFH/ref=sr_1_52?qid=1672909126&s=electronics&sr=1-52",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/21rBnbHkW9L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "Amazonbasics Micro Usb Fast Charging Cable For Android Smartphone,Personal Computer,Printer With Gold Plated Connectors (6 Feet, Black)",
+        "category": "USBCables",
+        "actual_price": "₹395",
+        "discounted_price": "₹199",
+        "discount_percentage": "50%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-Micro-Charging-Android-Phones/dp/B07232M876/ref=sr_1_53?qid=1672909126&s=electronics&sr=1-53",
+        "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/ 31nrDWDT8+L._SX300_SY300_.jpg",
+        "numeric_price": 199
+    },
+    {
+        "product_name": "TP-Link AC600 600 Mbps WiFi Wireless Network USB Adapter for Desktop PC with 2.4GHz/5GHz High Gain Dual Band 5dBi Antenna Wi-Fi, Supports Windows 11/10/8.1/8/7/XP, Mac OS 10.15 and earlier (Archer T2U Plus)",
+        "category": "WirelessUSBAdapters",
+        "actual_price": "₹2199",
+        "discounted_price": "₹1199",
+        "discount_percentage": "45%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/TP-Link-Wireless-Adapter-Archer-T2U/dp/B07P681N66/ref=sr_1_54?qid=1672909126&s=electronics&sr=1-54",
+        "img_link": "https://m.media-amazon.com/images/I/216Q4FqmZVL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 1199
+    },
+    {
+        "product_name": "AmazonBasics New Release Nylon USB-A to Lightning Cable Cord, Fast Charging MFi Certified Charger for Apple iPhone, iPad (6-Ft, Rose Gold)",
+        "category": "USBCables",
+        "actual_price": "₹2100",
+        "discounted_price": "₹799",
+        "discount_percentage": "62%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-Nylon-Braided-Lightning-Cable/dp/B082T6V3DT/ref=sr_1_57?qid=1672909126&s=electronics&sr=1-57",
+        "img_link": "https://m.media-amazon.com/images/I/31kw1RgU5yL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 799
+    },
+    {
+        "product_name": "iFFALCON 80 cm (32 inches) HD Ready Smart LED TV 32F53 (Black)",
+        "category": "SmartTelevisions",
+        "actual_price": "₹27990",
+        "discounted_price": "₹9999",
+        "discount_percentage": "64%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/iFFALCON-inches-Ready-Smart-TV-32F53/dp/B09X1M3DHX/ref=sr_1_142?qid=1672909130&s=electronics&sr=1-142",
+        "img_link": "https://m.media-amazon.com/images/I/51O93lUTxtL._SY300_SX300_QL70_FMwebp_.jpg",
+        "numeric_price": 9999
+    },
+    {
+        "product_name": "7SEVEN® Compatible LG Smart TV Remote",
+        "category": "RemoteControls",
+        "actual_price": "₹599",
+        "discounted_price": "₹349",
+        "discount_percentage": "42%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/7SEVENTM-Universal-Replacement-Original-AKB75095303/dp/B09MM6P76N/ref=sr_1_143?qid=1672909130&s=electronics&sr=1-143",
+        "img_link": "https://m.media-amazon.com/images/I/31Bfu6liMWL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 349
+    },
+    {
+        "product_name": "AmazonBasics 3.5mm to 2-Male RCA Adapter Cable",
+        "category": "RCACables",
+        "actual_price": "₹1200",
+        "discounted_price": "₹489",
+        "discount_percentage": "59%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-3-5mm-2-Male-Adapter-cable/dp/B01D5H8LDM/ref=sr_1_144?qid=1672909130&s=electronics&sr=1-144",
+        "img_link": "https://m.media-amazon.com/images/I/513rqzxlDpL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 489
+    },
+    {
+        "product_name": "Acer 109 cm (43 inches) I Series 4K Ultra HD Android Smart LED TV AR43AR2851UDFL (Black)",
+        "category": "SmartTelevisions",
+        "actual_price": "₹34990",
+        "discounted_price": "₹23999",
+        "discount_percentage": "31%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Acer-inches-Ultra-Android-AR43AR2851UDFL/dp/B0B1YY6JJL/ref=sr_1_146?qid=1672909131&s=electronics&sr=1-146",
+        "img_link": "https://m.media-amazon.com/images/I/417QOjrqyBL._SY300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 23999
+    },
+    {
+        "product_name": "Wayona Usb Type C 65W 6Ft/2M Long Fast Charging Cable",
+        "category": "USBCables",
+        "actual_price": "₹999",
+        "discounted_price": "₹399",
+        "discount_percentage": "60%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Wayona-Charging-Cable-Compatible-Samsung/dp/B09QGZM8QB/ref=sr_1_149?qid=1672909131&s=electronics&sr=1-149",
+        "img_link": "https://m.media-amazon.com/images/I/41Rd-jDNOmL._SY445_SX342_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "Saifsmart Outlet Wall Mount Hanger Holder for Dot 3rd Gen",
+        "category": "Mounts",
+        "actual_price": "₹1299",
+        "discounted_price": "₹349",
+        "discount_percentage ": "73%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/SAIFSMART-Compact-Bracket-Management-Bathroom/dp/B08L4SBJRY/ref=sr_1_150?qid=1672909131&s=electronics&sr=1-150",
+        "img_link": "https://m.media-amazon.com/images/I/41-AORr2udL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 349
+    },
+    {
+        "product_name": "MI 2-in-1 USB Type C Cable (Micro USB to Type C) 30cm",
+        "category": "USBCables",
+        "actual_price": "₹299",
+        "discounted_price": "₹179",
+        "discount_percentage": "40%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/USB-Cable-Micro-Type-30cm/dp/B09X79PP8F/ref=sr_1_151?qid=1672909131&s=electronics&sr=1-151",
+        "img_link": "https://m.media-amazon.com/images/I/21fnxCjCF1L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 179
+    },
+    {
+        "product_name": "AmazonBasics New Release ABS USB-A to Lightning Cable",
+        "category": "USBCables",
+        "actual_price": "₹1500",
+        "discounted_price": "₹689",
+        "discount_percentage": "54%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-Lightning-USB-Cable-Certified/dp/B082T6GVG9/ref=sr_1_153?qid=1672909131&s=electronics&sr=1-153",
+        "img_link": "https://m.media-amazon.com/images/I/31R8-XSK40L._SX342_SY445_QL70_FMwebp_.jpg",
+        "numeric_price": 689
+    },
+    {
+        "product_name": "LG 108 cm (43 inches) 4K Ultra HD Smart LED TV 43UQ7500PSF (Ceramic Black)",
+        "category": "SmartTelevisions",
+        "actual_price": "₹49990",
+        "discounted_price": "₹30990",
+        "discount_percentage": "38%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/LG-inches-Ultra-43UQ7500PSF-Ceramic/dp/B0B3XY5YT4/ref=sr_1_154?qid=1672909131&s=electronics&sr=1-154",
+        "img_link": "https://m.media-amazon.com/images/I/51dOjIreG4L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 30990
+    },
+    {
+        "product_name": "pTron Solero 331 3.4Amps Multifunction Fast Charging Cable",
+        "category": "USBCables",
+        "actual_price": "₹931",
+        "discounted_price": "₹249",
+        "discount_percentage": "73%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/pTron-3-4Amps-Multifunction-Charging-Tangle-free/dp/B0B4HKH19N/ref=sr_1_155?qid=1672909131&s=electronics&sr=1-155",
+        "img_link": "https://m.media-amazon.com/images/I/41gUqtvpULL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 249
+    },
+    {
+        "product_name": "10k 8k 4k HDMI Cable, Certified 48Gbps",
+        "category": "HDMICables",
+        "actual_price": "₹2399",
+        "discounted_price": "₹999",
+        "discount_percentage": "58%",
+        "rating": 4.6,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Cable-Certified-48Gbps-Ultra-Dynamic/dp/B08TGG316Z/ref=sr_1_156?qid=1672909131&s=electronics&sr=1-156",
+        "img_link": "https://m .media-amazon.com/images/I/41+AJMzMo7L._SX342_SY445_.jpg",
+        "numeric_price": 999
+    },
+    {
+        "product_name": "LRIPL Compatible Sony Bravia LCD/LED Remote",
+        "category": "RemoteControls",
+        "actual_price": "₹399",
+        "discounted_price": "₹399",
+        "discount_percentage": "0%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/LRIPL-Compatible-Bravia-Remote-Almost/dp/B071VMP1Z4/ref=sr_1_157?qid=1672909131&s=electronics&sr=1-157",
+        "img_link": "https://m.media-amazon.com/images/I/41hpz9rFbZL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "boAt Type-c A400 Type-c to USB A Cable",
+        "category": "USBCables",
+        "actual_price": "₹699",
+        "discounted_price": "₹349",
+        "discount_percentage": "50%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Indestructible-Type-C-Cable-Type-Phones/dp/B071SDRGWL/ref=sr_1_158?qid=1672909131&s=electronics&sr=1-158",
+        "img_link": "https://m.media-amazon.com/images/I/41alINWQKXL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 349
+    },
+    {
+        "product_name": "Zoul Type C to Type C Fast Charging Cable",
+        "category": "USBCables",
+        "actual_price": "₹1099",
+        "discounted_price": "₹399",
+        "discount_percentage": "64%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Charging-Braided-Compatible-Samsung/dp/B08PSQRW2T/ref=sr_1_159?qid=1672909131&s=electronics&sr=1-159",
+        "img_link": "https://m.media-amazon.com/images/I/41wI9GGhTHL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "TP-LINK AC1300 Archer T3U Plus High Gain USB 3.0 Wi-Fi Dongle",
+        "category": "WirelessUSBAdapters",
+        "actual_price": "₹2999",
+        "discounted_price": "₹1699",
+        "discount_percentage": "43%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/TP-LINK-T3U-Wireless-MU-MIMO-Supports/dp/B0859M539M/ref=sr_1_160?qid=1672909131&s=electronics&sr=1-160",
+        "img_link": "https://m.media-amazon.com/images/I/21jLkYGoSEL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 1699
+    },
+    {
+        "product_name": "LRIPL Mi Remote Control with Netflix & Prime Video Button",
+        "category": "RemoteControls",
+        "actual_price": "₹1099",
+        "discounted_price": "₹655",
+        "discount_percentage": "40%",
+        "rating": 3.2,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/LRIPL-Remote-Control-Netflix-Compatible/dp/B08RX8G496/ref=sr_1_161?qid=1672909131&s=electronics&sr=1-161",
+        "img_link": "https://m.media-amazon.com/images/I/21yP58lKDoL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 655
+    },
+    {
+        "product_name": "BlueRigger Digital Optical Audio Toslink Cable (3.3 Feet / 1 Meter)",
+        "category": "OpticalCables",
+        "actual_price": "₹599",
+        "discounted_price": "₹416",
+        "discount_percentage": "31%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/BlueRigger-Digital-Optical-Audio-Toslink/dp/B005LJQMCK/ref=sr_1_167?qid=1672909131&s=electronics&sr=1-167",
+        "img_link": "https://m.media-amazon.com/images/I/41CF6GtnpKL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 416
+    },
+    {
+        "product_name": "EGate i9 Pro-Max 1080p Native Full HD Projector 4k Support",
+        "category": "Projectors",
+        "actual_price": "₹15990",
+        "discounted_price": "₹9490",
+        "discount_percentage": "41%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Support-Display-Projector-Connectivity-E03i31/dp/B088Z1YWBC/ref=sr_1_176?qid=1672909133&s=electronics&sr=1-176",
+        "img_link": "https://m.media-amazon.com/images/I/51DhRNtyo0L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 9490
+    },
+    {
+        "product_name": "ZEBRONICS HAA2021 HDMI version 2.1 cable",
+        "category": "HDMICables",
+        "actual_price": "₹1499",
+        "discounted_price": "₹637",
+        "discount_percentage": "58%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Zeb-HAA2021-HDMI-Meter-Cable/dp/B07VSG5SXZ/ref=sr_1_177?qid=1672909133&s=electronics&sr=1-177",
+        "img_link": "https://m.media-amazon.com/images/I/31fpyR3mU4L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 637
+    },
+    {
+        "product_name": "7SEVEN® Compatible for Sony Bravia LCD LED UHD OLED QLED 4K Ultra HD TV remote control",
+        "category": "RemoteControls",
+        "actual_price": "₹899",
+        "discounted_price": "₹399",
+        "discount_percentage": "56%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/7SEVEN-Control-YouTube-Netflix-Compatible/dp/B08RWCZ6SY/ref=sr_1_178?qid=1672909133&s=electronics&sr=1-178",
+        "img_link": "https://m.media-amazon.com/images/I/31yHKPd+rsL._SY300_SY300_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "AmazonBasics Digital Optical Coax to Analog RCA Audio Converter Adapter",
+        "category": "OpticalCables",
+        "actual_price": "₹1600",
+        "discounted_price": "₹1089",
+        "discount_percentage": "32%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-Digital-Optical-Converter-Adapter/dp/B07KSB1MLX/ref=sr_1_179?qid=1672909133&s=electronics&sr=1-179",
+        "img_link": "https://m.media-amazon.com/images/I/41OrFRgZhYL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 1089
+    },
+    {
+        "product_name": "WZATCO Pixel | Portable LED Projector | Native 720p",
+        "category": "Projectors",
+        "actual_price": "₹9990",
+        "discounted_price": "₹6490",
+        "discount_percentage": "35%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in /WZATCO-Pixel-Portable-Projector-Compatible/dp/B0BLV1GNLN/ref=sr_1_231?qid=1672909135&s=electronics&sr=1-231",
+        "img_link": "https://m.media-amazon.com/images/I/41p+lllC3HL._SY300_SX300_.jpg",
+        "numeric_price": 6490
+    },
+    {
+        "product_name": "7SEVEN® Compatible Tata Sky Remote Control Replacement",
+        "category": "RemoteControls",
+        "actual_price": "₹599",
+        "discounted_price": "₹235",
+        "discount_percentage": "61%",
+        "rating": 3.5,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Tata-Remote-Control-Compatible-tatasky/dp/B08RHPDNVV/ref=sr_1_232?qid=1672909135&s=electronics&sr=1-232",
+        "img_link": "https://m.media-amazon.com/images/I/317Uu2STldL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 235
+    },
+    {
+        "product_name": "Posh 1.5 Meter High Speed Gold Plated HDMI Male to Female Extension Cable",
+        "category": "HDMICables",
+        "actual_price": "₹999",
+        "discounted_price": "₹173",
+        "discount_percentage": "83%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Meter-Speed-Plated-Female-Extension/dp/B08PPHFXG3/ref=sr_1_238?qid=1672909135&s=electronics&sr=1-238",
+        "img_link": "https://m.media-amazon.com/images/I/41-VkhORGAL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 173
+    },
+    {
+        "product_name": "Amazon Basics HDMI Coupler, Black",
+        "category": "Adapters",
+        "actual_price": "₹600",
+        "discounted_price": "₹209",
+        "discount_percentage": "65%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-AZHDAD01-HDMI-Coupler-Black/dp/B06XR9PR5X/ref=sr_1_239?qid=1672909135&s=electronics&sr=1-239",
+        "img_link": "https://m.media-amazon.com/images/I/417qayz2nNL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 209
+    },
+    {
+        "product_name": "Astigo Compatible Remote for Airtel Digital Set Top Box",
+        "category": "RemoteControls",
+        "actual_price": "₹899",
+        "discounted_price": "₹299",
+        "discount_percentage": "67%",
+        "rating": 3.8,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Astigo-Compatible-Remote-Airtel-Set/dp/B09127FZCK/ref=sr_1_242?qid=1672909136&s=electronics&sr=1-242",
+        "img_link": "https://m.media-amazon.com/images/I/31U-gk8FwsL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 299
+    },
+    {
+        "product_name": "Caprigo Heavy Duty TV Wall Mount Stand for 12 to 27 inches",
+        "category": "TVWall&CeilingMounts",
+        "actual_price": "₹799",
+        "discounted_price": "₹399",
+        "discount_percentage": "50%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Caprigo-Universal-Monitor-Rotatable-Black-M416/dp/B083GQGT3Z/ref=sr_1_243?qid=1672909136&s=electronics&sr=1-243",
+        "img_link": "https://m.media-amazon.com/images/I/41yMQskyzFL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "TATA SKY HD Connection with 1 month basic package",
+        "category": "SatelliteReceivers",
+        "actual_price": "₹2299",
+        "discounted_price": "₹1249",
+        "discount_percentage": "46%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/TATASKY-Connection-Month-Basic-Installation/dp/B07YZG8PPY/ref=sr_1_245?qid=1672909136&s=electronics&sr=1-245",
+        "img_link": "https://m.media-amazon.com/images/I/31J3pwT7i4L._SY300_SX300_QL70_FMwebp_.jpg",
+        "numeric_price": 1249
+    },
+    {
+        "product_name": "ZEBRONICS HAA2021 HDMI version 2.1 cable",
+        "category": "HDMICables",
+        "actual_price": "₹1499",
+        "discounted_price": "₹637",
+        "discount_percentage": "58%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Zeb-HAA2021-HDMI-Meter-Cable/dp/B07VSG5SXZ/ref=sr_1_177?qid=1672909133&s=electronics&sr=1-177",
+        "img_link": "https://m.media-amazon.com/images/I/31fpyR3mU4L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 637
+    },
+    {
+        "product_name": "7SEVEN® Compatible Tata Sky Remote Control Replacement",
+        "category": "RemoteControls",
+        "actual_price": "₹899",
+        "discounted_price": "₹399",
+        "discount_percentage": "56%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Tata-Remote-Control-Compatible-tatasky/dp/B08RHPDNVV/ref=sr_1_178?qid=1672909133&s=electronics&sr=1-178",
+        "img_link": "https://m.media-amazon.com/images/I/31yHKPd+rsL._SY300_SY300_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "Posh 1.5 Meter High Speed Gold Plated HDMI Male to Female Extension Cable",
+        "category": "HDMICables",
+        "actual_price": "₹999",
+        "discounted_price": "₹173",
+        "discount_percentage": "83%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Meter-Speed-Plated-Female-Extension/dp/B08PPHFXG 3/ref=sr_1_238?qid=1672909135&s=electronics&sr=1-238",
+        "img_link": "https://m.media-amazon.com/images/I/41-VkhORGAL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 173
+    },
+    {
+        "product_name": "Amazon Basics HDMI Coupler, Black",
+        "category": "Adapters",
+        "actual_price": "₹600",
+        "discounted_price": "₹209",
+        "discount_percentage": "65%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/AmazonBasics-AZHDAD01-HDMI-Coupler-Black/dp/B06XR9PR5X/ref=sr_1_239?qid=1672909135&s=electronics&sr=1-239",
+        "img_link": "https://m.media-amazon.com/images/I/417qayz2nNL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 209
+    },
+    {
+    "product_name": "Amazon Basics 16-Gauge Speaker Wire - 50 Feet",
+    "category": "SpeakerCables",
+    "actual_price": "₹795",
+    "discounted_price": "₹399",
+    "discount_percentage": "50%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/AmazonBasics-16-Gauge-Speaker-Wire-Feet/dp/B006LW0WDQ/ref=sr_1_263?qid=1672909136&s=electronics&sr=1-263",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41vJcrdr5mL._SY300_SX300_QL70_FMwebp_.jpg",
+    "numeric_price": 399
+},
+{
+        "product_name": "Fire-Boltt Ninja 3 Smartwatch Full Touch 1.69 & 60 Sports Modes",
+        "category": "SmartWatches",
+        "actual_price": "₹7999",
+        "discounted_price": "₹1499",
+        "discount_percentage": "81%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Fire-Boltt-Ninja-Smartwatch-Sports-Tracking/dp/B09YV4RG4D/ref=sr_1_29?qid=1672895755&s=electronics&sr=1-29",
+        "img_link": "https://m.media-amazon.com/images/I/41ApzUQQFVL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1499
+    },
+    {
+        "product_name": "Samsung Galaxy M33 5G (Mystique Green, 8GB, 128GB Storage)",
+        "category": "Smartphones",
+        "actual_price": "₹25999",
+        "discounted_price": "₹18499",
+        "discount_percentage": "29%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Samsung-Mystique-Storage-Purchased-Separately/dp/B09TWHTBKQ/ref=sr_1_30?qid=1672895755&s=electronics&sr=1-30",
+        "img_link": "https://m.media-amazon.com/images/I/41t61osAZHL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 18499
+    },
+    {
+        "product_name": "Fire-Boltt Ninja Call Pro Plus 1.83\" Smart Watch",
+        "category": "SmartWatches",
+        "actual_price": "₹19999",
+        "discounted_price": "₹1799",
+        "discount_percentage": "91%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Fire-Boltt-Bluetooth-Calling-Assistance-Resolution/dp/B0BF563HB4/ref=sr_1_33?qid=1672895755&s=electronics&sr=1-33",
+        "img_link": "https://m.media-amazon.com/images/I/41mzbWC6AkL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 1799
+    },
+    {
+        "product_name": "Redmi 10A (Sea Blue, 4GB RAM, 64GB Storage)",
+        "category": "Smartphones",
+        "actual_price": "₹11999",
+        "discounted_price": "₹8999",
+        "discount_percentage": "25%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Redmi-Storage-Battery-Finger-Booster/dp/B09XB7DPW1/ref=sr_1_42?qid=1672895755&s=electronics&sr=1-42",
+        "img_link": "https://m.media-amazon.com/images/I/41OaM+9ZHXL._SX300_SY300_QL70_ML2_.jpg",
+        "numeric_price": 8999
+    },
+    {
+        "product_name": "TP-Link AC750 Wifi Range Extender",
+        "category": "Repeaters&Extenders",
+        "actual_price": "₹5499",
+        "discounted_price": "₹1889",
+        "discount_percentage": "66%",
+        "rating": 4.2,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Tp-Link-300Mbps-AC750-Range-Extender/dp/B00KXULGJQ/ref=sr_1_57?qid=1672902997&s=computers&sr=1-57",
+        "img_link": "https://m.media-amazon.com/images/I/312J9hg8ypL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 1889
+    },
+    {
+        "product_name": "boAt Bassheads 242 in Ear Wired Earphones with Mic",
+        "category": "In-Ear",
+        "actual_price": "₹1490",
+        "discounted_price": "₹455",
+        "discount_percentage": "69%",
+        "rating": 4.1,
+        "sentiment": "Positive",
+        " product_link": "https://www.amazon.in/boAt-Bassheads-242-Wired-Earphones/dp/B08H9Z3XQW/ref=sr_1_58?qid=1672902997&s=computers&sr=1-58",
+        "img_link": "https://m.media-amazon.com/images/I/41nGG6kJr9L._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 455
+    },
+    {
+        "product_name": "DIGITEK® (DTR 260 GT) Gorilla Tripod",
+        "category": "TripodLegs",
+        "actual_price": "₹995",
+        "discounted_price": "₹399",
+        "discount_percentage": "60%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/DIGITEK%C2%AE-DTR-260-GT-Flexible/dp/B08LPJZSSW/ref=sr_1_59?qid=1672902997&s=computers&sr=1-59",
+        "img_link": "https://m.media-amazon.com/images/I/41jOKzw6-EL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "Samsung EVO Plus 128GB microSDXC UHS-I U3",
+        "category": "MicroSD",
+        "actual_price": "₹3999",
+        "discounted_price": "₹1059",
+        "discount_percentage": "74%",
+        "rating": 4.3,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Samsung-microSDXC-Memory-Adapter-MB-MC128KA/dp/B09MT84WV5/ref=sr_1_60?qid=1672902997&s=computers&sr=1-60",
+        "img_link": "https://m.media-amazon.com/images/I/31R6RP26dzL._SY300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 1059
+    },
+    {
+        "product_name": "pTron Solero TB301 3A Type-C Data and Fast Charging Cable",
+        "category": "USBCables",
+        "actual_price": "₹1000",
+        "discounted_price": "₹149",
+        "discount_percentage": "85%",
+        "rating": 3.9,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Solero-TB301-Charging-480Mbps-1-5-Meter/dp/B08Y1TFSP6/ref=sr_1_61?qid=1672902997&s=computers&sr=1-61",
+        "img_link": "https://m.media-amazon.com/images/I/31wOPjcSxlL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 149
+    },
+    {
+        "product_name": "HP 805 Black Original Ink Cartridge",
+        "category": "InkjetInkCartridges",
+        "actual_price": "₹761",
+        "discounted_price": "₹717",
+        "discount_percentage": "6%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/805-Black-Original-Ink-Cartridge/dp/B08CYPB15D/ref=sr_1_62?qid=1672902997&s=computers&sr=1-62",
+        "img_link": "https://m.media-amazon.com/images/I/41ZraPJKHYL._SY300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 717
+    },
+    {
+        "product_name": "Sounce Spiral Charger Cable Protector",
+        "category": "CableConnectionProtectors",
+        "actual_price": "₹999",
+        "discounted_price": "₹99",
+        "discount_percentage": "90%",
+        "rating": 4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Sounce-Charger-Protector-Charging-Protective/dp/B085HY1DGR/ref=sr_1_64?qid=1672902997&s=computers&sr=1-64",
+        "img_link": "https://m.media-amazon.com/images/I/41nf9n-v3pL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 99
+    },
+    {
+        "product_name": "Dell WM118 Wireless Mouse",
+        "category": "Mice",
+        "actual_price": "₹1299",
+        "discounted_price": "₹569",
+        "discount_percentage": "56%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/DELL-WM118-Wireless-Optical-Mouse/dp/B07JPX9CR7/ref=sr_1_68?qid=1672902997&s=computers&sr=1-68",
+        "img_link": "https://m.media-amazon.com/images/I/31959YGwwiL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 569
+    },
+    {
+        "product_name": "Boult Audio AirBass PowerBuds",
+        "category": "In-Ear",
+        "actual_price": "₹8999",
+        "discounted_price": "₹1499",
+        "discount_percentage": "83%",
+        "rating": 3.7,
+        "sentiment": "Neutral",
+        "product_link": "https://www.amazon.in/Boult-Audio-PowerBuds-Wireless-Waterproof/dp/B08D11DZ2W/ref=sr_1_69?qid=1672902997&s=computers&sr=1-69",
+        "img_link": "https://m.media-amazon.com/images/I/41vEB+mY55L._SY300_SY300_.jpg",
+        "numeric_price": 1499
+    },
+    {
+        "product_name": "Eveready 1015 Carbon Zinc AA Battery",
+        "category": "DisposableBatteries",
+        "actual_price": "₹180",
+        "discounted_price": "₹149",
+        "discount_percentage": "17%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Eveready-1015-Carbon-Zinc-Battery/dp/B07Q7561HD/ref=sr_1_70?qid=1672902997&s=computers&sr=1-70",
+        "img_link": "https://m.media-amazon.com/images/I/51MA5PwP6xL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 149
+    },
+    {
+        "product_name": "Zebronics Zeb-Transformer-M Optical USB Gaming Mouse",
+        "category": "GamingMice",
+        "actual_price": "₹549",
+        "discounted_price": "₹399",
+        "discount_percentage": "27%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Zebronics-Zeb-Transformer-M-Optical-Gaming-Effect/dp/B0819HZPXL/ref=sr_1_71?qid=1672902997&s=computers&sr=1-71",
+        "img_link": "https://m.media-amazon.com/images/I/41I-azRJBLL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 399
+    },
+    {
+        "product_name": "PIDILITE Fevicryl Acrylic Colours Sunflower Kit",
+        "category": "Paints",
+        "actual_price": "₹225",
+        "discounted_price": "₹191",
+        "discount_percentage": "15%",
+        "rating": 4.4,
+        "sentiment": "Positive",
+        "product_link": "https://www.amazon.in/Fevicryl-Acrylic-colors-Sunflower-Shades/dp/B00LXTFMRS/ref=sr_1_72?qid=1672902997&s=computers&sr=1-72",
+        "img_link": "https://m.media-amazon.com/images/I/4136eo-yWlL._SX300_SY300_QL70_FMwebp_.jpg",
+        "numeric_price": 191
+    },
+    {
+    "product_name": "Casio FX-82MS 2nd Gen Non-Programmable Scientific Calculator, 240 Functions and 2-line Display, Black",
+    "category": "Scientific",
+    "actual_price": "₹550",
+    "discounted_price": "₹522",
+    "discount_percentage": "5%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Casio-Non-Programmable-Scientific-Calculator-Functions/dp/B00AXHBBXU/ref=sr_1_79?qid=1672902998&s=computers&sr=1-79",
+    "img_link": "https://m.media-amazon.com/images/I/41LcHKyVl9L._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 522
+  },
+  {
+    "product_name": "Tygot 10 Inches Big LED Ring Light for Camera, Phone tiktok YouTube Video Shooting and Makeup, 10\" inch Ring Light with 7 Feet Long Foldable and Lightweight Tripod Stand",
+    "category": "Macro&RinglightFlashes",
+    "actual_price": "₹1999",
+    "discounted_price": "₹799",
+    "discount_percentage": "60%",
+    "rating": 3.8,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Tygot-YouTube-Shooting-Foldable-Lightweight/dp/B08MCD9JFY/ref=sr_1_80?qid=1672902998&s=computers&sr=1-80",
+    "img_link": "https://m.media-amazon.com/images/I/412CjF5u2iL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 799
+  },
+  {
+    "product_name": "HP X200 Wireless Mouse with 2.4 GHz Wireless connectivity, Adjustable DPI up to 1600, ambidextrous Design, and 18-Month Long Battery Life. 3-Years Warranty (6VY95AA)",
+    "category": "Mice",
+    "actual_price": "₹1199",
+    "discounted_price": "₹681",
+    "discount_percentage": "43%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/HP-Wireless-Mouse-X200-6VY95AA/dp/B083RCTXLL/ref=sr_1_82?qid=1672902998&s=computers&sr=1-82",
+    "img_link": "https://m.media-amazon.com/images/I/21psCtgM5BL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 681
+  },
+  {
+    "product_name": "Oakter Mini UPS for 12V WiFi Router Broadband Modem | Backup Upto 4 Hours | WiFi Router UPS Power Backup During Power Cuts | UPS for 12V Router Broadband Modem | Current Surge & Deep Discharge Protection",
+    "category": "NetworkingDevices",
+    "actual_price": "₹3490",
+    "discounted_price": "₹1199",
+    "discount_percentage": "66%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Mini-UPS-Router-WiFi-12V/dp/B08HLZ28QC/ref=sr_1_83?qid=1672902998&s=computers&sr=1-83",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31PfpEPlg-L._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1199
+  },
+  {
+    "product_name": "TP-Link Archer AC1200 Archer C6 Wi-Fi Speed Up to 867 Mbps/5 GHz + 400 Mbps/2.4 GHz, 5 Gigabit Ports, 4 External Antennas, MU-MIMO, Dual Band, WiFi Coverage with Access Point Mode, Black",
+    "category": "Routers",
+    "actual_price": "₹4999",
+    "discounted_price": "₹2499",
+    "discount_percentage": "50%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/TP-Link-Archer-C6-Wireless-MU-MIMO/dp/B07G VR9TG7/ref=sr_1_84?qid=1672902998&s=computers&sr=1-84",
+    "img_link": "https://m.media-amazon.com/images/I/41VDUqScJFL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 2499
+  },
+  {
+    "product_name": "boAt Rockerz 550 Over Ear Bluetooth Headphones with Upto 20 Hours Playback, 50MM Drivers, Soft Padded Ear Cushions and Physical Noise Isolation, Without Mic (Black)",
+    "category": "Over-Ear",
+    "actual_price": "₹4999",
+    "discounted_price": "₹1799",
+    "discount_percentage": "64%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Boat-Rockerz-550-Headphone-Aesthetics/dp/B0856HY85J/ref=sr_1_85?qid=1672902998&s=computers&sr=1-85",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41PlZjYsy-L._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1799
+  },
+  {
+    "product_name": "Xiaomi Mi Wired in Ear Earphones with Mic Basic with Ultra Deep Bass & Aluminum Alloy Sound Chamber (Black)",
+    "category": "In-Ear",
+    "actual_price": "₹599",
+    "discounted_price": "₹429",
+    "discount_percentage": "28%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Mi-Earphones-Basic-Mic-Black/dp/B07CD2BN46/ref=sr_1_87?qid=1672902998&s=computers&sr=1-87",
+    "img_link": "https://m.media-amazon.com/images/I/31Rn5CAJDBL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 429
+  },
+  {
+    "product_name": "Zodo 8. 5 inch LCD E-Writer Electronic Writing Pad/Tablet Drawing Board (Paperless Memo Digital Tablet)",
+    "category": "GraphicTablets",
+    "actual_price": "₹499",
+    "discounted_price": "₹100",
+    "discount_percentage": "80%",
+    "rating": 3.5,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/ZODO-Writer-Electronic-Writing-Paperless/dp/B07PLHTTB4/ref=sr_1_88_mod_primary_new?qid=1672902998&s=computers&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-88",
+    "img_link": "https://m.media-amazon.com/images/I/51JF5xTgNhL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 100
+  },
+  {
+    "product_name": "Zebronics ZEB-KM2100 Multimedia USB Keyboard Comes with 114 Keys Including 12 Dedicated Multimedia Keys & with Rupee Key",
+    "category": "Keyboards",
+    "actual_price": "₹399",
+    "discounted_price": "₹329",
+    "discount_percentage": "18%",
+    "rating": 3.6,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Zebronics-Km2100-Multimedia-USB-Keyboard/dp/B077T3BG5L/ref=sr_1_89?qid=1672902998&s=computers&sr=1-89",
+    "img_link": "https://m.media-amazon.com/images/I/41XQP3N-SdL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 329
+  },
+  {
+    "product_name": "MI Usb Type-C Cable Smartphone (Black)",
+    "category": "USBCables",
+    "actual_price": "₹299",
+    "discounted_price": "₹229",
+    "discount_percentage": "23%",
+    "rating": 4.3,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/MI-MTCY001IN-USB-Type-C-Cable/dp/B08DDRGWTJ/ref=sr_1_90?qid=1672902998&s=computers& sr=1-90",
+    "img_link": "https://m.media-amazon.com/images/I/31XO-wfGGGL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 229
+  },
+  {
+    "product_name": "ZEBRONICS Zeb-Comfort Wired USB Mouse, 3-Button, 1000 DPI Optical Sensor, Plug & Play, for Windows/Mac, Black",
+    "category": "Mice",
+    "actual_price": "₹299",
+    "discounted_price": "₹139",
+    "discount_percentage": "54%",
+    "rating": 3.8,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Zebronics-Wired-Optical-Mouse-Black/dp/B079Y6JZC8/ref=sr_1_91?qid=1672902998&s=computers&sr=1-91",
+    "img_link": "https://m.media-amazon.com/images/I/31vS-1ot-HL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 139
+  },
+  {
+    "product_name": "boAt Rockerz 370 On Ear Bluetooth Headphones with Upto 12 Hours Playtime, Cozy Padded Earcups and Bluetooth v5.0, with Mic (Buoyant Black)",
+    "category": "On-Ear",
+    "actual_price": "₹2499",
+    "discounted_price": "₹1199",
+    "discount_percentage": "52%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Rockerz-370-Headphone-Bluetooth-Lightweight/dp/B0856HNMR7/ref=sr_1_92?qid=1672902998&s=computers&sr=1-92",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41Beq4WLggL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1199
+  },
+  {
+    "product_name": "ZEBRONICS Zeb-Astra 20 Wireless BT v5.0 Portable Speaker with 10W RMS Output, TWS, 10H Backup Approx, Built in Rechargeable Battery FM Radio, AUX, mSD, USB, Call Function and Dual 52mm Drivers Multi",
+    "category": "BluetoothSpeakers",
+    "actual_price": "₹2299",
+    "discounted_price": "₹1049",
+    "discount_percentage": "54%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/ZEBRONICS-Zeb-Astra-20-Wireless-Rechargeable/dp/B0B12K5BPM/ref=sr_1_93?qid=1672902998&s=computers&sr=1-93",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31ZMMGdh5nL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1049
+  },
+  {
+    "product_name": "Gizga Essentials Spiral Cable Protector Cord Saver for Mac Charger, iPhone Charger, Wire Protector, Lightweight Durable Flexible Wire Winder for Charging Cables, Data Cables, Earphones, Pack of 10",
+    "category": "Décor",
+    "actual_price": "₹299",
+    "discounted_price": "₹119",
+    "discount_percentage": "60%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/GIZGA-Protector-Charging-Protective-G55/dp/B08MTCKDYN/ref=sr_1_94?qid=1672902998&s=computers&sr=1-94",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/511g3fIVsqL._SY300_SX300_QL70_FMwebp_.jpg",
+    "numeric_price": 119
+  },
+  {
+    "product_name": "Portronics Konnect L POR-1081 Fast Charging 3A Type-C Cable 1.2Meter with Charge & Sync Function for All Type-C Devices (Grey)",
+    "category": "USBCables",
+    "actual_price": "₹339",
+    "discounted_price": "₹154",
+    "discount_percentage": "55%",
+    "rating": 4.3,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Portronics-POR-1081-Charging-1-2Meter-Function/dp/B08CF3D7QR/ref=sr_1_95?qid=1672902998&s=computers&sr=1-95",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31dJ+lXJq3L._SY300_SX300_.jpg",
+    "numeric_price": 154
+  },
+  {
+    "product_name": "Panasonic CR-2032/5BE Lithium Coin Battery - Pack of 5",
+    "category": "GeneralPurposeBatteries&BatteryChargers",
+    "actual_price": "₹250",
+    "discounted_price": "₹225",
+    "discount_percentage": "10%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Panasonic-Lithium-CR2032-5BE-Battery/dp/B00LVMTA2A/ref=sr_1_97?qid=1672903000&s=computers&sr=1-97",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/5145vqMSaTL._SY300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 225
+  },
+  {
+    "product_name": "MemeHo® Smart Standard Multi-Purpose Laptop Table with Dock Stand/Study Table/Bed Table/Foldable and Portable/Ergonomic & Rounded Edges/Non-Slip Legs/Engineered Wood with Cup Holder (Black)",
+    "category": "Lapdesks",
+    "actual_price": "₹1499",
+    "discounted_price": "₹656",
+    "discount_percentage": "56%",
+    "rating": 4.3,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Multi-Purpose-Foldable-Portable-Ergonomic-Non-Slip/dp/B07TR5HSR9/ref=sr_1_98?qid=1672903000&s=computers&sr=1-98",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/51EJirBX6bL._SY300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 656
+  },
+  {
+    "product_name": "SanDisk Ultra Dual Drive Go USB Type C Pendrive for Mobile (Black, 128 GB, 5Y - SDDDC3-128G-I35)",
+    "category": "PenDrives",
+    "actual_price": "₹2800",
+    "discounted_price": "₹1109",
+    "discount_percentage": "60%",
+    "rating": 4.3,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/SanDisk-Ultra-Drive-Pendrive-Mobile/dp/B0819ZZK5K/ref=sr_1_99?qid=1672903000&s=computers&sr=1-99",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/410l0pKc2OL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1109
+  },
+  {
+    "product_name": "boAt Xtend Smartwatch with Alexa Built-in, 1.69” HD Display, Multiple Watch Faces, Stress Monitor, Heart & SpO2 Monitoring, 14 Sports Modes, Sleep Monitor, 5 ATM & 7 Days Battery(Pitch Black)",
+    "category": "SmartWatches",
+    "actual_price": "₹7990",
+    "discounted_price": "₹2999",
+    "discount_percentage": "62%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/boAt-Smartwatch-Multiple-Monitoring-Resistance/dp/B096VF5YYF/ref=sr_1_100?qid=1672903000&s=computers&sr=1-100",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41pfjyUPZLL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 2999
+  },
+  {
+    "product_name": "Tizum Mouse Pad/ Computer Mouse Mat with Anti-Slip Rubber Base | Smooth Mouse Control | Spill-Resistant Surface for Laptop, Notebook, MacBook, Gaming, Laser/ Optical Mouse, 9.4”x 7.9”, Multicolored",
+    "category": "MousePads",
+    "actual_price": "₹299",
+    "discounted_price": "₹169",
+    "discount_percentage": "43%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Notebook-MacBook-Computer-Anti-Skid-Mousepad/dp/B08QJJCY2Q/ref=sr_1_101?qid=1672903000&s=computers&sr=1-101",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/51SzLWO7e+L._SY300_SX300_.jpg",
+    "numeric_price": 169
+  },
+  {
+    "product_name": "Epson 003 65 ml for EcoTank L1110/L3100/L3101/L3110/L3115/L3116/L3150/L3151/L3152/L3156/L5190 Black Ink Bottle",
+    "category": "InkjetInkCartridges",
+    "actual_price": "₹404",
+    "discounted_price": "₹309",
+    "discount_percentage": "24%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Epson-003-Black-Ink-Bottle/dp/B07L5L4GTB/ref=sr_1_102?qid=1672903000&s=computers&sr=1-102",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41PcrlfQ2iL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 309
+  },
+  {
+    "product_name": "Amazon Brand - Solimo 2000/1000 Watts Room Heater with Adjustable Thermostat (ISI certified, White colour, Ideal for small to medium room/area)",
+    "category": "FanHeaters",
+    "actual_price": "₹2000",
+    "discounted_price": "₹1199",
+    "discount_percentage": "40%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Amazon-Brand-Solimo-2000-Watt-certified/dp/B07VX71FZP/ref=sr_1_7?qid=1672923591&s=kitchen&sr=1-7",
+    "img_link": "https://m.media-amazon.com/images/I/41ITfQhGHfL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1199
+  },
+  {
+    "product_name": "StyleHouse Lint Remover for Woolen Clothes, Electric Lint Remover, Best Lint Shaver for Clothes",
+    "category": "LintShavers",
+    "actual_price": "₹999",
+    "discounted_price": "₹455",
+    "discount_percentage": "54%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/StyleHouse-Remover-Woolen-Clothes-Electric/dp/B07NCKMXVZ/ref=sr_1_8?qid=1672923591&s=kitchen&sr=1-8",
+    "img_link": "https://m.media-amazon.com/images/I/415CYtympZL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 455
+  },
+  {
+    "product_name": "beatXP Kitchen Scale Multipurpose Portable Electronic Digital Weighing Scale | Weight Machine With Back light LCD Display | White |10 kg | 2 Year Warranty |",
+    "category": "DigitalKitchenScales",
+    "actual_price": "₹1999",
+    "discounted_price": "₹199",
+    "discount_percentage": "90%",
+    "rating": 3.7,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/beatXP-Multipurpose-Portable-Electronic-Weighing/dp/B0B61DSF17/ref=sr_1_10?qid=1672923591&s=kitchen&sr=1-10",
+    "img_link": "https://m.media-amazon.com/images/I/414Cwv2guxL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 199
+  },
+  {
+    "product_name": "Glun Multipurpose Portable Electronic Digital Weighing Scale Weight Machine (10 Kg - with Back Light)",
+    "category": "DigitalKitchenScales",
+    "actual_price": "₹499",
+    "discounted_price": "₹293",
+    "discount_percentage": "41%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Multipurpose-Portable-Electronic-Digital-Weighing/dp/B07VQGVL68/ref=sr_1_11?qid=1672923591&s=kitchen&sr=1-11",
+    "img_link": "https://m.media-amazon.com/images/I/31p014p14mL._SX342_SY445_QL70_FMwebp_.jpg",
+    "numeric_price": 293
+  },
+  {
+    "product_name": "Pigeon Polypropylene Mini Handy and Compact Chopper with 3 Blades for Effortlessly Chopping Vegetables and Fruits for Your Kitchen (12420, Green, 400 ml)",
+    "category": "Choppers",
+    "actual_price": "₹495",
+    "discounted_price": "₹199",
+    "discount_percentage": "60%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Pigeon-Stovekraft-Plastic-Chopper-Blades/dp/B01C8P29N0/ref=sr_1_12?qid=1672923591&s=kitchen&sr=1-12",
+    "img_link": "https://m.media-amazon.com/images/I/41cVgYgAKpL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 199
+  },
+  {
+    "product_name": "Prestige 1.5 L itre Kettle 1500-watts, Red",
+    "category": "ElectricKettles",
+    "actual_price": "₹1245",
+    "discounted_price": "₹749",
+    "discount_percentage": "40%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Prestige-1-5-Kettle-1500-watts-Red/dp/B07VNFP3C2/ref=sr_1_16?qid=1672923591&s=kitchen&sr=1-16",
+    "img_link": "https://m.media-amazon.com/images/I/41JCf4kTKgL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 749
+  },
+  {
+    "product_name": "Bajaj RHX-2 800-Watt Room Heater (White)",
+    "category": "ElectricHeaters",
+    "actual_price": "₹1549",
+    "discounted_price": "₹1399",
+    "discount_percentage": "10%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Bajaj-RHX-2-800-Watt-Room-Heater/dp/B00LUGTJGO/ref=sr_1_17?qid=1672923591&s=kitchen&sr=1-17",
+    "img_link": "https://m.media-amazon.com/images/I/519JHuNt1RL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1399
+  },
+  {
+    "product_name": "Morphy Richards OFR Room Heater, 09 Fin 2000 Watts Oil Filled Room Heater , ISI Approved (OFR 9 Grey)",
+    "category": "RoomHeaters",
+    "actual_price": "₹13999",
+    "discounted_price": "₹6549",
+    "discount_percentage": "53%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Morphy-Richards-OFR-09-2000-Watt/dp/B01M5F614J/ref=sr_1_29?qid=1672923591&s=kitchen&sr=1-29",
+    "img_link": "https://m.media-amazon.com/images/I/31HzCDKv6ZL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 6549
+  },
+  {
+    "product_name": "Havells Aqua Plus 1.2 litre Double Wall Kettle / 304 Stainless Steel Inner Body / Cool touch outer body / Wider mouth/ 2 Year warranty (Black, 1500 Watt)",
+    "category": "ElectricKettles",
+    "actual_price": "₹2995",
+    "discounted_price": "₹1625",
+    "discount_percentage": "46%",
+    "rating": 4.5,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/HAVELLS-Kettle-Coffee-Boiler-Stainless/dp/B083GKDRKR/ref=sr_1_30?qid=1672923591&s=kitchen&sr=1-30",
+    "img_link": "https://m.media-amazon.com/images/I/31S74o1sCSS._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1625
+  },
+  {
+    "product_name": "Bajaj New Shakti Neo 15L Vertical Storage Water Heater (Geyser 15 litres) 4 Star BEE Rated Heater For Water Heating with Titanium Armour, Swirl Flow Technology, Glasslined Tank (White), 1 Yr Warranty",
+    "category": "StorageWaterHeaters",
+    "actual_price": "₹13150",
+    "discounted_price": "₹5499",
+    "discount_percentage": "58%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Bajaj-Shakti-Heater-Multiple-Safety/dp/B097R45BH8/ref=sr_1_30?qid=1672923592&s=kitchen&sr=1-30",
+    "img_link": "https://m.media-amazon.com/images/I/31U-ACCgQ1L._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 5499
+  },
+  {
+    "product_name": "Havells Ambrose 1200mm Ceiling Fan (Gold Mist Wood)",
+    "category": "CeilingFans",
+    "actual_price": "₹3190",
+    "discounted_price": "₹2199",
+    "discount_percentage": "31%",
+    "rating": 4.3,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Havells-Ambrose-1200mm-Ceiling-Gold/dp/B01LYU3BZF/ref=sr_1_187?qid=1672923600&s=kitchen&sr=1-187",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31CM9HiuvRL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 2199
+  },
+  {
+    "product_name": "PrettyKrafts Laundry Bag / Basket for Dirty Clothes, Folding Round Laundry Bag,Set of 2, Black Wave",
+    "category": "LaundryBags",
+    "actual_price": "₹799",
+    "discounted_price": "₹320",
+    "discount_percentage": "60%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/PrettyKrafts-Canvas-Laundry-Storage-Black/dp/B083RC4WFJ/ref=sr_1_188?qid=1672923600&s=kitchen&sr=1-188",
+    "img_link": "https://m.media-amazon.com/images/I/51zhY6X2NqL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 320
+  },
+  {
+    "product_name": "FABWARE Lint Remover for Clothes - Sticky Lint Roller for Clothes, Furniture, Wool, Coat, Car Seats, Carpet, Fabric, Dust Cleaner, Pet Hair Remover with 1 Handle & 1 Refill Total 60 Sheets & 1 Cover",
+    "category": "LintShavers",
+    "actual_price": "₹499",
+    "discounted_price": "₹298",
+    "discount_percentage": "40%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/FABWARE-Lint-Remover-Clothes-Furniture/dp/B09SFRNKSR/ref=sr_1_189?qid=1672923600&s=kitchen&sr=1-189",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31kDhgD+VYL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 298
+  },
+  {
+    "product_name": "Brayden Fito Atom Rechargeable Smoothie Blender with 2000 mAh Battery and 3.7V Motor with 400ml Tritan Jar (Blue)",
+    "category": "JuicerMixerGrinders",
+    "actual_price": "₹1499",
+    "discounted_price": "₹1199",
+    "discount_percentage": "20%",
+    "rating": 3.8,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Brayden-Portable-Smoothie-Blender-Rechargeable/dp/B07NRTCDS5/ref=sr_1_190?qid=1672923600&s=kitchen&sr=1-190",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/31SFYZqCSeL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1199
+  },
+  {
+    "product_name": "Bajaj Frore 1200 mm Ceiling Fan (Brown)",
+    "category": "CeilingFans",
+    "actual_price": "₹2660",
+    "discounted_price": "₹1399",
+    "discount_percentage": "47%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Bajaj-Frore-1200-Brown-Ceiling/dp/B07SPVMSC6/ref=sr_1_192?qid=1672923600&s=kitchen&sr=1-192",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/21qojQDoKWL._SX300_SY300_ QL70_FMwebp_.jpg",
+    "numeric_price": 1399
+  },
+  {
+    "product_name": "Venus Digital Kitchen Weighing Scale & Food Weight Machine for Health, Fitness, Home Baking & Cooking Scale, 2 Year Warranty & Battery Included (Weighing Scale Without Bowl) Capacity 10 Kg, 1 Gm",
+    "category": "DigitalKitchenScales",
+    "actual_price": "₹2799",
+    "discounted_price": "₹599",
+    "discount_percentage": "79%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Venus-Weighing-Warranty-Included-Capacity/dp/B09H3BXWTK/ref=sr_1_193?qid=1672923601&s=kitchen&sr=1-193",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31hgpO4BxQL._SY445_SX342_QL70_FMwebp_.jpg",
+    "numeric_price": 599
+  },
+  {
+    "product_name": "Bajaj ATX 4 750-Watt Pop-up Toaster (White)",
+    "category": "Pop-upToasters",
+    "actual_price": "₹1499",
+    "discounted_price": "₹1499",
+    "discount_percentage": "0%",
+    "rating": 4.3,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Bajaj-ATX-750-Watt-Pop-up-Toaster/dp/B0073QGKAS/ref=sr_1_194?qid=1672923600&s=kitchen&sr=1-194",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/313jBpnrJVL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1499
+  },
+  {
+    "product_name": "Coway Professional Air Purifier for Home, Longest Filter Life 8500 Hrs, Green True HEPA Filter, Traps 99.99% Virus & PM 0.1 Particles, Warranty 7 Years (AirMega 150 (AP-1019C))",
+    "category": "HEPAAirPurifiers",
+    "actual_price": "₹59900",
+    "discounted_price": "₹14400",
+    "discount_percentage": "76%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Coway-Professional-Purifier-Anti-Virus-AP-1019C/dp/B08GJ57MKL/ref=sr_1_195?qid=1672923600&s=kitchen&sr=1-195",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/51b5sh94f7L._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 14400
+  },
+  {
+    "product_name": "KENT Gold Optima Gravity Water Purifier (11016) | UF Technology Based | Non-Electric & Chemical Free | Counter Top | 10L Storage | White",
+    "category": "WaterFilters&Purifiers",
+    "actual_price": "₹1900",
+    "discounted_price": "₹1699",
+    "discount_percentage": "11%",
+    "rating": 3.6,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Gold-Optima-10-Litres-Non-electric-Purifier/dp/B009DA69W6/ref=sr_1_196?qid=1672923600&s=kitchen&sr=1-196",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31A-v4dVHmL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1699
+  },
+  {
+    "product_name": "Bajaj Rex 750W Mixer Grinder with Nutri Pro Feature, 4 Jars, White",
+    "category": "MixerGrinders",
+    "actual_price": "₹6375",
+    "discounted_price": "₹3249",
+    "discount_percentage": "49%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Bajaj-Rex-Mixer-Grinder-White/dp/B08G8H8DPL/ref=sr_1_198?qid=1672923600&s=kitchen&sr=1-198",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/316VkpDJItL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 3249
+  },
+  {
+    "product_name": "Havells Glaze 74W Pearl Ivory Gold Ceiling Fan, Sweep: 1200 Mm",
+    "category": "CeilingFans",
+    "actual_price": "₹4775",
+    "discounted_price": "₹1999",
+    "discount_percentage": "58%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Havells-Glaze-Pearl-Ivory-Ceiling/dp/B09MT94QLL/ref=sr_1_217?qid=1672923601&s=kitchen&sr=1-217",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/21SHZOWOynL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1999
+  },
+  {
+    "product_name": "Pick Ur Needs® Lint Remover for Clothes High Range Rechargeable Lint Shaver for All Types of Clothes, Fabrics, Blanket with 1 Extra Blade Multicolor (Rechargeable)",
+    "category": "LintShavers",
+    "actual_price": "₹1230",
+    "discounted_price": "₹799",
+    "discount_percentage": "35%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Pick-Ur-Needs-Rechargeable-Shaver/dp/B07NKNBTT3/ref=sr_1_218?qid=1672923601&s=kitchen&sr=1-218",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/419vF7uEFEL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 799
+  },
+  {
+    "product_name": "Rico Japanese Technology Rechargeable Wireless Electric Chopper with Replacement Warranty - Stainless Steel Blades, One Touch Operation, 10 Seconds Chopping, Mincing Vegetable, Meat - 250 ML, 30 Watts",
+    "category": "MiniFoodProcessors&Choppers",
+    "actual_price": "₹1999",
+    "discounted_price": "₹949",
+    "discount_percentage": "53%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Rico-Japanese-Technology-Rechargeable-Replacement/dp/B09KPXTZXN/ref=sr_1_220?qid=1672923601&s=kitchen&sr=1-220",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41JnGOKI2dL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 949
+  },
+  {
+    "product_name": "Butterfly Smart Wet Grinder, 2L (White) with Coconut Scrapper Attachment, Output - 150 W, Input 260 W",
+    "category": "WetGrinders",
+    "actual_price": "₹5156",
+    "discounted_price": "₹3657.66",
+    "discount_percentage": "29%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Butterfly-150-Watt-Grinder-Scrapper-Attachment/dp/B078HG2ZPS/ref=sr_1_221?qid=1672923601&s=kitchen&sr=1-221",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/414JLnTlLnL._SY300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 3657.66
+  },
+  {
+    "product_name": "Bajaj DHX-9 1000W Heavy Weight Dry Iron with Advance Soleplate and Anti-Bacterial German Coating Technology, Ivory",
+    "category": "DryIrons",
+    "actual_price": "₹1920",
+    "discounted_price": "₹1099",
+    "discount_percentage": "43%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Bajaj-DHX-1000-Watt-Ivory-Color/dp/B009P2L7CO/ref=sr_1_222?qid=1672923603&s=kitchen&sr=1-222",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/411ZPXAMTlL._SY300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1099
+  },
+  {
+    "product_name": "Aquasure From Aquaguard Amaze RO+UV+MTDS,7L storage water purifier,suitable for borewell,tanker,municipal water (Grey) from Eureka Forbes",
+    "category": "WaterFilters&Purifiers",
+    "actual_price": "₹16000",
+    "discounted_price": "₹8199",
+    "discount_percentage": "49%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Eureka-Forbes-Amaze-RO-MTDS/dp/B07YC8JHMB/ref=sr_1_223?qid=1672923603&s=kitchen&sr=1-223",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31Gulp0B-0L._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 8199
+  },
+  {
+    "product_name": "Wipro Vesta 1200 Watt GD203 Heavyweight Automatic Dry Iron| Quick Heat Up| Anti bacterial German Weilburger Double Coated Black Soleplate |2 Years Warranty",
+    "category": "DryIrons",
+    "actual_price": "₹1950",
+    "discounted_price": "₹1049",
+    "discount_percentage": "46%",
+    "rating": 3.8,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Heavyweight-Automatic-bacterial-Weilburger-Soleplate/dp/B0B84KSH3X/ref=sr_1_227?qid=1672923603&s=kitchen&sr=1-227",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41+HYuF5ToL._SY300_SY300_.jpg",
+    "numeric_price": 1049
+  },
+  {
+    "product_name": "Inalsa Electric Kettle Prism Inox - 1350 W with LED Illumination & Boro-Silicate Body, 1.8 L Capacity along with Cordless Base, 2 Year Warranty (Black)",
+    "category": "Kettle&ToasterSets",
+    "actual_price": "₹2995",
+    "discounted_price": "₹1182",
+    "discount_percentage": "61%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Inalsa-Electric-Kettle-Prism-Inox/dp/B08HLC7Z3G/ref=sr_1_229?qid=1672923603&s=kitchen&sr=1-229",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41FTyQVamFL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1182
+  },
+  {
+    "product_name": "VRPRIME Lint Roller Lint Remover for Clothes, Pet | 360 Sheets Reusable Sticky Easy-Tear Sheet Brush for Clothes, Furniture, Carpet, Dog Fur, Sweater, Dust & Dirt (4 Rolls - 90 Sheet Each Roll)",
+    "category": "LintShavers",
+    "actual_price": "₹999",
+    "discounted_price": "₹499",
+    "discount_percentage": "50%",
+    "rating": 4.6,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/VRPRIME-Remover-Reusable-Easy-Tear-Furniture/dp/B0BN6M3TCM/ref=sr_1_230?qid=1672923603&s=kitchen&sr=1-230",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/51qZekzGLxL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 499
+  },
+  {
+    "product_name": "Philips AC1215/20 Air purifier, removes 99.97% airborne pollutants, 4-stage filtration with True HEPA filter (white)",
+    "category": "HEPAAirPurifiers",
+    "actual_price": "₹11995",
+    "discounted_price": "₹8799",
+    "discount_percentage": "27%",
+    "rating": 4.1,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Philips-AC1215-20-Purifier-White/dp/B01L6MT7E0/ref=sr_1_231?qid=1672923603&s=kitchen&sr=1-231",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41YlkgRwHVL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 8799
+  },
+  {
+    "product_name": "Heart Home Waterproof Round Non Wovan Laundry Bag/Hamper|Metalic Printed With Handles|Foldable Bin & 45 Liter Capicity|Size 37 x 37 x 49, Pack of 1 (Grey & Black)-HEARTXY11447",
+    "category": "LaundryBaskets",
+    "actual_price": "₹499",
+    "discounted_price": "₹199",
+    "discount_percentage": "60%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Heart-Home-Foldable-Organiser-HEARTXY11447/dp/B08VGM3YMF/ref=sr_1_196?qid=1672923601&s=kitchen&sr=1-196",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41VQTjrYaCL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 199
+  },
+  {
+    "product_name": "MILTON Smart Egg Boiler 360-Watts (Transparent and Silver Grey), Boil Up to 7 Eggs",
+    "category": "EggBoilers",
+    "actual_price": "₹1899",
+    "discounted_price": "₹1099",
+    "discount_percentage": "42%",
+    "rating": 4.3,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/MILTON-Smart-Egg-Boiler-Transparent/dp/B08TTRVWKY/ref=sr_1_197?qid=1672923601&s=kitchen&sr=1-197",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41yrqUum9EL._SY300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1099
+  },
+  {
+    "product_name": "iBELL SEK15L Premium 1.5 Litre Stainless Steel Electric Kettle,1500W Auto Cut-Off Feature,Silver with Black",
+    "category": "ElectricKettles",
+    "actual_price": "₹1490",
+    "discounted_price": "₹664",
+    "discount_percentage": "55%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Premium-Stainless-Electric-Cut-Off-Feature/dp/B07T4D9FNY/ref=sr_1_199?qid=1672923601&s=kitchen&sr=1-199",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/415pqPUbDVL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 664
+  },
+  {
+    "product_name": "Tosaa T2STSR Sandwich Gas Toaster Regular (Black)",
+    "category": "SandwichMakers",
+    "actual_price": "₹350",
+    "discounted_price": "₹260",
+    "discount_percentage": "26%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Tosaa-Nonstick-Sandwich-Toaster-Regular/dp/B07RX42 D3D/ref=sr_1_200?qid=1672923601&s=kitchen&sr=1-200",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31PzyH4N9xL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 260
+  },
+  {
+    "product_name": "V-Guard Divino 5 Star Rated 15 Litre Storage Water Heater (Geyser) with Advanced Safety Features, White",
+    "category": "StorageWaterHeaters",
+    "actual_price": "₹8500",
+    "discounted_price": "₹6499",
+    "discount_percentage": "24%",
+    "rating": 4.4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/V-Guard-Divino-Storage-15-Vertical/dp/B08WRKSF9D/ref=sr_1_201?qid=1672923601&s=kitchen&sr=1-201",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31DXRMiRYLL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 6499
+  },
+  {
+    "product_name": "Akiara® - Makes life easy Mini Sewing Machine with Table Set | Tailoring Machine | Hand Sewing Machine with extension table, foot pedal, adapter",
+    "category": "Sewing&EmbroideryMachines",
+    "actual_price": "₹2499",
+    "discounted_price": "₹1484",
+    "discount_percentage": "41%",
+    "rating": 3.7,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/akiara-Machine-Stitching-extension-adapter/dp/B09R83SFYV/ref=sr_1_202?qid=1672923601&s=kitchen&sr=1-202",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/51oZKPP1qhL._SY300_SX300_QL70_FMwebp_.jpg",
+    "numeric_price": 1484
+  },
+  {
+    "product_name": "Usha Steam Pro SI 3713, 1300 W Steam Iron, Powerful steam Output up to 18 g/min, Non-Stick Soleplate (White & Blue)",
+    "category": "SteamIrons",
+    "actual_price": "₹1560",
+    "discounted_price": "₹999",
+    "discount_percentage": "36%",
+    "rating": 3.6,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Usha-Steam-3713-1300-Watt-White/dp/B07989VV5K/ref=sr_1_203?qid=1672923601&s=kitchen&sr=1-203",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/41TMMpVWKqL._SY300_SX300_QL70_FMwebp_.jpg",
+    "numeric_price": 999
+  },
+  {
+    "product_name": "Wonderchef Nutri-blend Complete Kitchen Machine | 22000 RPM Mixer Grinder, Blender, Chopper, Juicer | 400W Powerful motor | SS Blades | 4 Unbreakable Jars | 2 Years Warranty | Online Recipe Book By Chef Sanjeev Kapoor | Black",
+    "category": "JuicerMixerGrinders",
+    "actual_price": "₹6500",
+    "discounted_price": "₹3299",
+    "discount_percentage": "49%",
+    "rating": 3.7,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Wonderchef-Nutri-Blend-CKM-Jars-Black/dp/B07FL3WRX5/ref=sr_1_204?qid=1672923601&s=kitchen&sr=1-204",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/414eE-M+gfL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 3299
+  },
+  {
+    "product_name": "WIDEWINGS Electric Handheld Milk Wand Mixer Frother for Latte Coffee Hot Milk, Milk Frother for Coffee, Egg Beater, Hand Blender, Coffee Beater with Stand",
+    "category": "HandBlenders",
+    "actual_price": "₹999",
+    "discounted_price": "₹259",
+    "discount_percentage": "74%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/WIDEWINGS-Electric-Handheld-Frother-Blender/dp/B0BPCJM7TB/ref=sr_1_205?qid=1672923601&s=kitchen&sr=1-205",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41sJ4KQa5xL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 259
+  },
+  {
+    "product_name": "Morphy Richards Icon Superb 750W Mixer Grinder, 4 Jars, Silver and Black",
+    "category": "MixerGrinders",
+    "actual_price": "₹7795",
+    "discounted_price": "₹3249",
+    "discount_percentage": "58%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Morphy-Richards-Icon-Superb-Grinder/dp/B08H673XKN/ref=sr_1_206?qid=1672923601&s=kitchen&sr=1-206",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/417XNLkkFRL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 3249
+  },
+  {
+    "product_name": "Philips Handheld Garment Steamer GC360/30 - Vertical & Horizontal Steaming, 1200 Watt, up to 22g/min",
+    "category": "SteamIrons",
+    "actual_price": "₹5995",
+    "discounted_price": "₹4280",
+    "discount_percentage": "29%",
+    "rating": 3.8,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/Philips-Handheld-Garment-Steamer-Purple/dp/B07DXRGWDJ/ref=sr_1_207?qid=1672923601&s=kitchen&sr=1-207",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31JaiYt3IRL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 4280
+  },
+  {
+    "product_name": "Vedini Transparent Empty Refillable Reusable Fine Mist Spray Bottle for Perfume, Travel with DIY Sticker Set ( 100ml, Pack of 4)",
+    "category": "SprayBottles",
+    "actual_price": "₹299",
+    "discounted_price": "₹189",
+    "discount_percentage": "37%",
+    "rating": 4.2,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Vedini-Refillable-Spray-Bottle-Transparent/dp/B08243SKCK/ref=sr_1_212?qid=1672923601&s=kitchen&sr=1-212",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/41cAIdLrGPL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 189
+  },
+  {
+    "product_name": "Crompton Sea Sapphira 1200 mm Ultra High Speed 3 Blade Ceiling Fan (Lustre Brown, Pack of 1)",
+    "category": "CeilingFans",
+    "actual_price": "₹2349",
+    "discounted_price": "₹1449",
+    "discount_percentage": "38%",
+    "rating": 3.9,
+    "sentiment": "Neutral",
+    "product_link": "https://www.amazon.in/CROMPTON-Sapphira-Ultra-Ceiling-Lustre/dp/B09SPTNG58/ref=sr_1_213?qid=1672923601&s=kitchen&sr=1-213",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T1/images/I/31pRaPCFqVL._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 1449
+  },
+  {
+    "product_name": "Kuber Industries Waterproof Canvas Laundry Bag/Hamper|Metalic Printed With Handles|Foldable Bin & 45 Liter Capicity|Size 37 x 37 x 46, Pack of 1 (Brown)",
+    "category": "LaundryBaskets",
+    "actual_price": "₹499",
+    "discounted_price": "₹199",
+    "discount_percentage": "60%",
+    "rating": 4,
+    "sentiment": "Positive",
+    "product_link": "https://www.amazon.in/Kuber-Industries-Waterproof-Organizer-CTKTC034616/dp/B083J64CBB/ref=sr_1_214?qid=1672923601&s=kitchen&sr=1-214",
+    "img_link": "https://m.media-amazon.com/images/W/WEBP_402378-T2/images/I/51YNXPOgNML._SX300_SY300_QL70_FMwebp_.jpg",
+    "numeric_price": 199
+  }
+
+        ];
+
+        // Conversation state
+        const conversationState = {
+            step: 0, // 0 = welcome, 1 = main category, 2 = subcategory, 3 = final category, 4 = price, 5 = rating, 6 = results
+            selectedMainCategory: null,
+            selectedSubCategory: null,
+            selectedFinalCategory: null,
+            selectedPriceRange: null,
+            selectedRatingRange: null,
+            currentOptions: [],
+            selectedProductCategory: null
+        };
+
+        // Initialize the conversation
+        function initConversation() {
+            setTimeout(() => {
+                addMessage('bot', "Let's find the perfect product for you! First, please select a main category:");
+                showMainCategories();
+                conversationState.step = 1;
+            }, 1000);
+        }
+
+        // Show main categories
+        function showMainCategories() {
+            const mainCategories = Object.keys(categoryStructure);
+            conversationState.currentOptions = mainCategories;
+            
+            let optionsHTML = '<div class="options-container">';
+            mainCategories.forEach(category => {
+                optionsHTML += `<button class="option-btn" onclick="selectMainCategory('${category}')">${category}</button>`;
+            });
+            optionsHTML += '</div>';
+            
+            addMessage('bot', optionsHTML);
+        }
+
+        // Select main category
+        function selectMainCategory(category) {
+            conversationState.selectedMainCategory = category;
+            addMessage('user', category);
+            
+            // Mark the selected button
+            if (event) event.target.classList.add('selected');
+            
+            setTimeout(() => {
+                addMessage('bot', `Great! Now select a subcategory in ${category}:`);
+                showSubCategories(category);
+                conversationState.step = 2;
+            }, 800);
+        }
+
+        // Show subcategories
+        function showSubCategories(mainCategory) {
+            const subCategories = Object.keys(categoryStructure[mainCategory]);
+            conversationState.currentOptions = subCategories;
+            
+            let optionsHTML = '<div class="options-container">';
+            subCategories.forEach(subCategory => {
+                optionsHTML += `<button class="option-btn" onclick="selectSubCategory('${subCategory}', '${mainCategory}')">${subCategory}</button>`;
+            });
+            optionsHTML += `<button class="option-btn back-btn" onclick="backToMainCategories()"><i class="fas fa-arrow-left"></i> Back</button>`;
+            optionsHTML += '</div>';
+            
+            addMessage('bot', optionsHTML);
+        }
+
+        // Select subcategory
+        function selectSubCategory(subCategory, mainCategory) {
+            conversationState.selectedSubCategory = subCategory;
+            addMessage('user', subCategory);
+            
+            // Mark the selected button
+            if (event) event.target.classList.add('selected');
+            
+            setTimeout(() => {
+                addMessage('bot', `Now select the specific product type in ${subCategory}:`);
+                showFinalCategories(mainCategory, subCategory);
+                conversationState.step = 3;
+            }, 800);
+        }
+
+        // Show final categories
+        function showFinalCategories(mainCategory, subCategory) {
+            const finalCategories = Object.keys(categoryStructure[mainCategory][subCategory]);
+            conversationState.currentOptions = finalCategories;
+            
+            let optionsHTML = '<div class="options-container">';
+            finalCategories.forEach(finalCat => {
+                optionsHTML += `<button class="option-btn" onclick="selectFinalCategory('${finalCat}', '${mainCategory}', '${subCategory}')">${finalCat}</button>`;
+            });
+            optionsHTML += `<button class="option-btn back-btn" onclick="backToSubCategories()"><i class="fas fa-arrow-left"></i> Back</button>`;
+            optionsHTML += '</div>';
+            
+            addMessage('bot', optionsHTML);
+        }
+
+        // Select final category
+        function selectFinalCategory(finalCategory, mainCategory, subCategory) {
+            conversationState.selectedFinalCategory = finalCategory;
+            conversationState.selectedProductCategory = categoryStructure[mainCategory][subCategory][finalCategory][0];
+            addMessage('user', finalCategory);
+            
+            // Mark the selected button
+            if (event) event.target.classList.add('selected');
+            
+            setTimeout(() => {
+                addMessage('bot', `Now, please select your price range:`);
+                showPriceOptions();
+                conversationState.step = 4;
+            }, 800);
+        }
+
+        // Back to main categories
+        function backToMainCategories() {
+            conversationState.selectedMainCategory = null;
+            conversationState.selectedSubCategory = null;
+            conversationState.step = 1;
+            
+            // Remove the last bot message (which contains the subcategories)
+            const messages = document.getElementById('chat-messages');
+            messages.removeChild(messages.lastChild);
+            
+            // Remove the user's main category selection
+            messages.removeChild(messages.lastChild);
+            
+            addMessage('bot', "Please select a main category:");
+            showMainCategories();
+        }
+
+        // Back to subcategories
+        function backToSubCategories() {
+            conversationState.selectedSubCategory = null;
+            conversationState.step = 2;
+            
+            // Remove the last bot message (which contains the final categories)
+            const messages = document.getElementById('chat-messages');
+            messages.removeChild(messages.lastChild);
+            
+            // Remove the user's subcategory selection
+            messages.removeChild(messages.lastChild);
+            
+            addMessage('bot', `Select a subcategory in ${conversationState.selectedMainCategory}:`);
+            showSubCategories(conversationState.selectedMainCategory);
+        }
+
+        // Back to final categories
+        function backToFinalCategories() {
+            conversationState.step = 3;
+            
+            // Remove the last bot message (which contains the price options)
+            const messages = document.getElementById('chat-messages');
+            messages.removeChild(messages.lastChild);
+            
+            // Remove the user's final category selection
+            messages.removeChild(messages.lastChild);
+            
+            addMessage('bot', `Select the specific product type in ${conversationState.selectedSubCategory}:`);
+            showFinalCategories(conversationState.selectedMainCategory, conversationState.selectedSubCategory);
+        }
+
+        // Show price options
+        function showPriceOptions() {
+            conversationState.currentOptions = priceRanges.map(r => r.label);
+            
+            let optionsHTML = '<div class="options-container">';
+            priceRanges.forEach(range => {
+                optionsHTML += `<button class="option-btn" onclick="selectPriceRange('${range.label}')">${range.label}</button>`;
+            });
+            optionsHTML += `<button class="option-btn back-btn" onclick="backToFinalCategories()"><i class="fas fa-arrow-left"></i> Back</button>`;
+            optionsHTML += '</div>';
+            
+            addMessage('bot', optionsHTML);
+        }
+
+        // Select price range
+        function selectPriceRange(priceRangeLabel) {
+            conversationState.selectedPriceRange = priceRangeLabel;
+            addMessage('user', priceRangeLabel);
+            
+            // Mark the selected button
+            if (event) event.target.classList.add('selected');
+            
+            setTimeout(() => {
+                addMessage('bot', `Finally, please select your minimum rating preference:`);
+                showRatingOptions();
+                conversationState.step = 5;
+            }, 800);
+        }
+
+        // Show rating options
+        function showRatingOptions() {
+            conversationState.currentOptions = ratingRanges.map(r => r.label);
+            
+            let optionsHTML = '<div class="options-container">';
+            ratingRanges.forEach(range => {
+                optionsHTML += `<button class="option-btn" onclick="selectRatingRange('${range.label}')">${range.label}</button>`;
+            });
+            optionsHTML += `<button class="option-btn back-btn" onclick="backToPriceOptions()"><i class="fas fa-arrow-left"></i> Back</button>`;
+            optionsHTML += '</div>';
+            
+            addMessage('bot', optionsHTML);
+        }
+
+        // Back to price options
+        function backToPriceOptions() {
+            conversationState.step = 4;
+            
+            // Remove the last bot message (which contains the rating options)
+            const messages = document.getElementById('chat-messages');
+            messages.removeChild(messages.lastChild);
+            
+            // Remove the user's price selection
+            messages.removeChild(messages.lastChild);
+            
+            addMessage('bot', "Please select your price range:");
+            showPriceOptions();
+        }
+
+        // Select rating range
+        function selectRatingRange(ratingRangeLabel) {
+            conversationState.selectedRatingRange = ratingRangeLabel;
+            addMessage('user', ratingRangeLabel);
+            
+            // Mark the selected button
+            if (event) event.target.classList.add('selected');
+            
+            setTimeout(() => {
+                showResults();
+                conversationState.step = 6;
+            }, 800);
+        }
+
+// Show results based on selections
+function showResults() {
+    // Find the selected price and rating ranges
+    const selectedPriceRange = priceRanges.find(range => range.label === conversationState.selectedPriceRange);
+    const selectedRatingRange = ratingRanges.find(range => range.label === conversationState.selectedRatingRange);
+    
+    // Filter products
+    const filteredProducts = productDataset.filter(product => {
+        // Category filter
+        if (product.category !== conversationState.selectedProductCategory) return false;
+        
+        // Price filter
+        if (product.numeric_price < selectedPriceRange.min || product.numeric_price > selectedPriceRange.max) return false;
+        
+        // Rating filter
+        if (product.rating < selectedRatingRange.min || product.rating > selectedRatingRange.max) return false;
+        
+        return true;
+    });
+    
+    // Sort products by rating in descending order
+    const sortedProducts = filteredProducts.sort((a, b) => b.rating - a.rating);
+    
+    // Limit to top 8 products
+    const topProducts = sortedProducts.slice(0, 6);
+    
+    // Display results
+    if (topProducts.length > 0) {
+        addMessage('bot', `Here are the top ${topProducts.length} products in ${conversationState.selectedMainCategory} > ${conversationState.selectedSubCategory} > ${conversationState.selectedFinalCategory} (${conversationState.selectedPriceRange}, ${conversationState.selectedRatingRange}):`);
+        displayRecommendations(topProducts);
+    } else {
+        addMessage('bot', `Sorry, I couldn't find any products matching your criteria in ${conversationState.selectedMainCategory} > ${conversationState.selectedSubCategory} > ${conversationState.selectedFinalCategory}.`);
+    }
+    
+    // Add restart button
+    addRestartButton();
+}
+
+        // Add restart button
+        function addRestartButton() {
+            const messagesContainer = document.getElementById('chat-messages');
+            const restartDiv = document.createElement('div');
+            restartDiv.className = 'message bot-message';
+            restartDiv.innerHTML = `
+                <div class="message-content">
+                    <button class="option-btn" onclick="restartConversation()" style="background-color: var(--primary-color); color: white;">Start New Search</button>
+                </div>
+            `;
+            messagesContainer.appendChild(restartDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Restart conversation
+        function restartConversation() {
+            conversationState.step = 0;
+            conversationState.selectedMainCategory = null;
+            conversationState.selectedSubCategory = null;
+            conversationState.selectedFinalCategory = null;
+            conversationState.selectedPriceRange = null;
+            conversationState.selectedRatingRange = null;
+            conversationState.selectedProductCategory = null;
+            
+            // Clear recommendations
+            document.getElementById('recommendations-content').innerHTML = '<p>Complete the steps to see personalized recommendations!</p>';
+            
+            // Add restart message
+            addMessage('user', 'Start new search');
+            setTimeout(() => {
+                addMessage('bot', "Let's find the perfect product for you! First, please select a main category:");
+                showMainCategories();
+                conversationState.step = 1;
+            }, 800);
+        }
+
+        // Display product recommendations
+        function displayRecommendations(products) {
+            const container = document.getElementById('recommendations-content');
+            
+            if (!products || products.length === 0) {
+                container.innerHTML = '<p>No products found matching your criteria.</p>';
+                return;
+            }
+            
+            let html = '<div class="products-grid">';
+            
+            products.forEach(product => {
+                if (!product) return;
+                
+                const sentiment = analyzeProductSentiment(product);
+                const productName = product.product_name || 'Unnamed Product';
+                const discountedPrice = product.discounted_price || 'Price not available';
+                const productLink = product.product_link || '#';
+                const rating = parseFloat(product.rating) || 0;
+                const imgLink = product.img_link || 'https://via.placeholder.com/200x150?text=No+Image';
+                
+                html += `
+                    <div class="product-card">
+                        <div class="product-details">
+                            <h3 class="product-title">${productName}</h3>
+                            <div class="product-price">${discountedPrice}</div>
+                            ${product.actual_price ? `<div class="original-price">${product.actual_price}</div>` : ''}
+                            ${product.discount_percentage ? `<div class="discount">${product.discount_percentage} off</div>` : ''}
+                            <div class="product-rating">
+                                ${'<i class="fas fa-star"></i>'.repeat(Math.floor(rating))}
+                                ${rating % 1 >= 0.5 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                                ${'<i class="far fa-star"></i>'.repeat(5 - Math.ceil(rating))}
+                                <span>${rating.toFixed(1)}</span>
+                                <span class="sentiment-indicator ${sentiment}">${sentiment}</span>
+                            </div>
+                            <a href="${productLink}" target="_blank" class="product-link">View Product</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Analyze sentiment based on product reviews
+        function analyzeProductSentiment(product) {
+            if (!product) return "neutral";
+            return (product.sentiment || "neutral").toLowerCase();
+        }
+
+        // Add a message to the chat
+        function addMessage(sender, text) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            // Check if the text contains HTML (like our option buttons)
+            if (/<\/?[a-z][\s\S]*>/i.test(text)) {
+                messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
+            } else {
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.textContent = text;
+                messageDiv.appendChild(contentDiv);
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Handle text input validation
+        function validateTextInput(inputText) {
+            const currentOptions = conversationState.currentOptions;
+            
+            // Check if input matches any of the current options (case insensitive)
+            const matchedOption = currentOptions.find(option => 
+                option.toLowerCase() === inputText.toLowerCase()
+            );
+            
+            if (matchedOption) {
+                return matchedOption; // Return the correctly cased option
+            }
+            
+            return null;
+        }
+
+        // Handle user input
+        function handleUserInput() {
+            const userInput = document.getElementById('user-input');
+            const text = userInput.value.trim();
+            
+            if (text === '') return;
+            
+            // Add user message
+            addMessage('user', text);
+            userInput.value = '';
+            
+            // Process based on conversation state
+            switch(conversationState.step) {
+                case 1: // Main category selection
+                    const validMainCategory = validateTextInput(text);
+                    if (validMainCategory) {
+                        selectMainCategory(validMainCategory);
+                    } else {
+                        addMessage('bot', "Please select a valid main category from the options above.");
+                        showMainCategories();
+                    }
+                    break;
+                    
+                case 2: // Subcategory selection
+                    const validSubCategory = validateTextInput(text);
+                    if (validSubCategory) {
+                        selectSubCategory(validSubCategory, conversationState.selectedMainCategory);
+                    } else {
+                        addMessage('bot', "Please select a valid subcategory from the options above.");
+                        showSubCategories(conversationState.selectedMainCategory);
+                    }
+                    break;
+                    
+                case 3: // Final category selection
+                    const validFinalCategory = validateTextInput(text);
+                    if (validFinalCategory) {
+                        selectFinalCategory(validFinalCategory, conversationState.selectedMainCategory, conversationState.selectedSubCategory);
+                    } else {
+                        addMessage('bot', "Please select a valid product type from the options above.");
+                        showFinalCategories(conversationState.selectedMainCategory, conversationState.selectedSubCategory);
+                    }
+                    break;
+                    
+                case 4: // Price selection
+                    const validPriceRange = validateTextInput(text);
+                    if (validPriceRange) {
+                        selectPriceRange(validPriceRange);
+                    } else {
+                        addMessage('bot', "Please select a valid price range from the options above.");
+                        showPriceOptions();
+                    }
+                    break;
+                    
+                case 5: // Rating selection
+                    const validRatingRange = validateTextInput(text);
+                    if (validRatingRange) {
+                        selectRatingRange(validRatingRange);
+                    } else {
+                        addMessage('bot', "Please select a valid rating range from the options above.");
+                        showRatingOptions();
+                    }
+                    break;
+                    
+                default: // Welcome or results - restart
+                    restartConversation();
+                    break;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('send-btn').addEventListener('click', handleUserInput);
+        document.getElementById('user-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleUserInput();
+            }
+        });
+
+        // Start the conversation when the page loads
+        window.onload = function() {
+            setTimeout(() => {
+                initConversation();
+            }, 1500);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - VibeBot-AI Sentiment Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF9900;
+            --secondary-color: #146EB4;
+            --accent-color: #FF4F00;
+            --light-color: #f8f9fa;
+            --dark-color: #232F3E;
+            --heading-color: #FF8F73;
+            --background-light: #f5f7ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            color: var(--dark-color);
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Title Section */
+        .title-section {
+            width: 100%;
+            padding: 2rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa, #dee2e6);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 70px;
+        }
+
+        .title-section h1 {
+            font-size: 2.2rem;
+            color: var(--dark-color);
+            font-weight: bold;
+        }
+
+        /* Content Sections */
+        .content-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 3rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section h2 {
+            color: var(--heading-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Team Section */
+        .team-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: nowrap; /* Prevents wrapping */
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            text-align: center;
+            width: 200px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 1rem;
+        }
+
+        .team-member img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .team-member h3 {
+            color: var(--heading-color);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member p {
+ font-size: 1rem;
+            color: var(--dark-color);
+        }
+
+        .team-member:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .team-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">VibeBot-AI </div>
+        <ul class="nav-links">
+            <li><a href="newserver.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Title Section -->
+    <section class="title-section">
+        <h1>About Us - VibeBot-AI Sentiment Analyzer</h1>
+    </section>
+
+    <!-- Project Overview -->
+    <section class="content-container">
+        <div class="content-section">
+            <h2>Project Overview</h2>
+            <p>VibeBot-AI is a sentiment analysis tool designed to help users explore customer sentiments and product recommendations based on reviews. By leveraging advanced machine learning techniques, we aim to provide insights that enhance the shopping experience.</p>
+        </div>
+    </section>
+
+    <!-- Problem Statement -->
+    <section class="content-container">
+        <div class="content-section">
+            <h2>Problem Statement</h2>
+            <p>In today's market, consumers often struggle to make informed purchasing decisions due to overwhelming choices and varying product reviews. Our goal is to simplify this process by providing data-driven insights that help users understand product sentiments and make better choices.</p>
+        </div>
+    </section>
+
+    <!-- Team Members -->
+    <section class="content-container">
+        <div class="content-section">
+            <h2>Our Team</h2>
+            <div class="team-container">
+                <div class="team-member">
+                    <img src="https://vectorified.com/images/developer-icon-23.png" alt="Project Lead">
+                    <h3>Pavani</h3>
+                    <p>Project Lead </p>
+                </div>
+                <div class="team-member">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2920/2920320.png" alt="Chatbot Developer">
+                    <h3>Vinay</h3>
+                    <p>Chatbot Developer</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4248/4248443.png" alt="NLP/ML Specialist">
+                    <h3>Layya</h3>
+                    <p>NLP/ML Specialist</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://cdn-icons-png.flaticon.com/512/942/942799.png" alt="Data Engineer">
+                    <h3>Mohan Nagasai</h3>
+                    <p>Data Engineer</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 VibeBot-AI Sentiment Analyzer. All Rights Reserved.
+    </footer>
+</body>
+</html>

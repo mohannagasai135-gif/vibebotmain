@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - VibeBot-AI Sentiment Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF9900;
+            --secondary-color: #146EB4;
+            --text-color: #2E4057;
+            --background-light: #f5f7ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Title Section */
+        .title-section {
+            width: 100%;
+            padding: 2rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa, #dee2e6);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 70px;
+        }
+
+        .title-section h1 {
+            font-size: 2.2rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-container h2 {
+            color: var(--text-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .contact-container p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Contact Options */
+        .contact-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .contact-option {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 250px;
+        }
+
+        .contact-option:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .contact-option h3 {
+            font-size: 1.4rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-option p {
+            font-size:  1rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .contact-option button {
+            background-color: #343a40;
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-top: auto;
+        }
+
+        .contact-option button:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Form Section */
+        .contact-form {
+            display: none;
+            margin-top: 2rem;
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.8rem 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .contact-form button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Footer Section */
+        .footer {
+            background-color: var(--secondary-color);
+            padding: 1rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .navbar .nav-links {
+                margin-top: 10px;
+                display: flex;
+                flex-direction: column;
+            }
+            .navbar .nav-links li {
+                margin: 10px 0;
+            }
+            .contact-options {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">VibeBot-AI</div>
+        <ul class="nav-links">
+            <li><a href="newserver.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Title Section -->
+    <section class="title-section">
+        <h1>Contact Us</h1>
+    </section>
+
+    <!-- Contact Section -->
+    <div class="contact-container">
+        <h2>Get in Touch with Our Team</h2>
+        <p>Choose the appropriate team member based on your queries and get in touch with them directly.</p>
+
+        <!-- Contact Options -->
+        <div class="contact-options">
+            <div class="contact-option">
+                <h3>Team lead</h3>
+                <p>Project Lead: Pavani</p>
+                <button onclick="showForm('data-scientist')">Contact</button>
+            </div>
+            <div class="contact-option">
+                <h3>Chatbot Developer</h3>
+                <p>Project Lead: Vinay </p>
+                <button onclick="showForm('frontend-developer')">Contact</button>
+            </div>
+            <div class="contact-option">
+                <h3>ML Engineer</h3>
+                <p>Project Lead: Layya</p>
+                <button onclick="showForm('ml-engineer')">Contact</button>
+            </div>
+            <div class="contact-option">
+                <h3>Project Manager</h3>
+                <p>Project Lead: Mohan</p>
+                <button onclick="showForm('project-manager')">Contact</button>
+            </div>
+            <div class="contact-option">
+                <h3>General Inquiries</h3>
+                <p>For any other queries, please contact our team lead.</p>
+                <button onclick="showForm('general')">Contact</button>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div id="data-scientist" class="contact-form">
+            <h3>Contact Data Scientist</h3>
+            <form action="submit_form.php" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div id="frontend-developer" class="contact-form">
+            <h3>Contact Frontend Developer</h3>
+            <form action="submit_form.php" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div id="ml-engineer" class="contact-form">
+            <h3>Contact ML Engineer</h3>
+            <form action="submit_form.php" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div id="project-manager" class="contact-form">
+            <h3>Contact Project Manager</h3>
+            <form action="submit_form.php" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div id="general" class="contact-form">
+            <h3>General Inquiries</h3>
+            <form action="submit_form.php" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2025 VibeBot-AI. All Rights Reserved.</p>
+    </div>
+
+    <script>
+        function showForm(contactType) {
+            const formElements = document.querySelectorAll('.contact-form');
+            formElements.forEach(function(element) {
+                element.style.display = 'none';
+            });
+            document.getElementById(contactType).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
